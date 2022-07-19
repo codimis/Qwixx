@@ -2,16 +2,23 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:qwixx_project/controller/onborading_controller.dart';
-import 'package:qwixx_project/view/onborading_screens/first_onboardingscreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'view/splashScreen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.getInstance().then((prefs) {
+  var darkModeOn = prefs.getBool('darkMode') ?? true;
   runApp(MultiProvider(
     providers: [
-       ChangeNotifierProvider<ChangeTheme>(create: (context) => ChangeTheme()),
-        ChangeNotifierProvider<OnboardingController>(create: (context) => OnboardingController()),
+      ChangeNotifierProvider<ChangeTheme>(create: (context) => ChangeTheme(darkModeOn)),
+      ChangeNotifierProvider<OnboardingController>(
+          create: (context) => OnboardingController()),
     ],
-    builder: (context,child)=>const MyApp(),
-    ));
+    builder: (context, child) => const MyApp(),
+  ));
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -22,47 +29,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: context.watch<ChangeTheme>().isLight? lightTheme():darkTheme(),
-      home:  FirstOnboardingScreen(theme:context.watch<ChangeTheme>().isLight ? lightTheme():darkTheme()),
-    );
-  }
-
-  ThemeData lightTheme() {
-    return ThemeData(
-      textTheme: const TextTheme(
-        
-        headline6: TextStyle(
-          
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-        bodyText1: TextStyle(
-          fontSize: 16,
-          color: Colors.black,
-        ),
-      )
-    );
-  }
-
-  ThemeData darkTheme() {
-    return ThemeData.dark().copyWith(
-  
-      
-      textTheme: const TextTheme(
-        headline6: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-        bodyText1: TextStyle(
-          fontSize: 16,
-          color: Colors.black,
-        ),
-      )
-    
-      
+      theme: context.watch<ChangeTheme>().currentTheme,
+      home: SplashScreen(),
     );
   }
 }
-
