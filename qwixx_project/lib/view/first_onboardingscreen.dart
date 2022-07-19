@@ -5,18 +5,45 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qwixx_project/controller/onborading_controller.dart';
+import 'package:shake/shake.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'home_view.dart';
 
 
 class FirstOnboardingScreen extends StatefulWidget {
- const FirstOnboardingScreen({Key? key, required this.theme}) : super(key: key);
-  final ThemeData theme;
+ const FirstOnboardingScreen({Key? key}) : super(key: key);
   @override
   State<FirstOnboardingScreen> createState() => _FirstOnboardingScreenState();
 }
 
 class _FirstOnboardingScreenState extends State<FirstOnboardingScreen> {
+  late ShakeDetector shakeDetector;
   final controller=OnboardingController();
   
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    location();
+     shakeDetector=ShakeDetector.waitForStart(onPhoneShake: (){
+       Navigator.pushReplacement(
+       context, MaterialPageRoute(builder: (context) => const HomeView()));
+    });
+    
+    
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    shakeDetector.stopListening();
+    super.dispose();
+  }
+  
+  void location() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString('locations', "onBoarding");
+  }
 
 
   @override
@@ -42,27 +69,8 @@ class _FirstOnboardingScreenState extends State<FirstOnboardingScreen> {
               );
               
             }, itemCount: controller.onboardingPages.length,onPageChanged: Provider.of<OnboardingController>(context).updatePage),
-            Positioned(
-              bottom:20,
-              left:20,
-              child: Row(children:List.generate(controller.onboardingPages.length,
-              ((index) => Container(
-                margin: const EdgeInsets.all(5),
-                width: 12,
-                height: 12,
-                decoration:  BoxDecoration(
-                  color: (index==Provider.of<OnboardingController>(context).currentPage)?Colors.red:Colors.grey,
-                  shape:BoxShape.circle
-                ),
-              )))),
-            ),
-            Positioned(bottom: 20,right:20,child: FloatingActionButton(
-              onPressed: Provider.of<OnboardingController>(context).currentPage==2? (){
-
-              }:Provider.of<OnboardingController>(context,listen:false).forward,
-              elevation: 0,
-              child: Provider.of<OnboardingController>(context).currentPage==2?const Text("Start"):const Text('Next'),
-            ),)
+            LeftCornerWidget(controller: controller),
+             RightCornerButtonWidget(shakeDetector: shakeDetector)
           ],
         ),
       ),
@@ -73,6 +81,58 @@ class _FirstOnboardingScreenState extends State<FirstOnboardingScreen> {
 
   Text headlineText(int index, BuildContext context) => Text(controller.onboardingPages[index].title,style: Theme.of(context).textTheme.headline6,textAlign: TextAlign.center);
 
+}
+
+class LeftCornerWidget extends StatelessWidget {
+  const LeftCornerWidget({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  final OnboardingController controller;
+ 
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom:20,
+      left:20,
+      child: Row(children:List.generate(controller.onboardingPages.length,
+      ((index) => Container(
+        margin: const EdgeInsets.all(5),
+        width: 12,
+        height: 12,
+        decoration:  BoxDecoration(
+          color: (index==Provider.of<OnboardingController>(context).currentPage)?Colors.red:Colors.grey,
+          shape:BoxShape.circle
+        ),
+      )))),
+    );
+  }
+}
+
+class RightCornerButtonWidget extends StatelessWidget {
+  const RightCornerButtonWidget({
+    Key? key,required this.shakeDetector
+  }) : super(key: key);
+  final ShakeDetector shakeDetector;
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(bottom: 20,right:20,child: FloatingActionButton(
+
+      onPressed: Provider.of<OnboardingController>(context).currentPage==2? () async {
+        
+      Navigator.pushReplacement(
+      context, MaterialPageRoute(builder: (context) => const HomeView()));
+      
+      }:(){
+        Provider.of<OnboardingController>(context,listen:false).forward();
+        shakeDetector.startListening();
+
+      },
+      elevation: 0,
+      child: Provider.of<OnboardingController>(context).currentPage==2?const Text("Start"):const Text('Next'),
+    ),);
+  }
 }
 
 class AnimationWidget extends StatefulWidget {
@@ -97,9 +157,17 @@ class _AnimationWidgetState extends State<AnimationWidget> with TickerProviderSt
   }
   @override
   Widget build(BuildContext context) {
-    return InkWell( onTap: widget.index.isOdd ?(){
-      Provider.of<ChangeTheme>(context,listen: false).isLight? _animationController.animateTo(0.5):_animationController.animateBack(0);
-      Provider.of<ChangeTheme>(context,listen:false).changeTheme();      
+    return InkWell( onTap: widget.index.isOdd ?() async {
+      Future.microtask(() async => 
+           context.read<ChangeTheme>().changeTheme()
+
+      );
+      !context.read<ChangeTheme>().isLight ? _animationController.animateTo(0.5):_animationController.animateBack(0);
+      final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('darkMode', context.read<ChangeTheme>().isLight);
+
+
   
     }:null,child: Lottie.asset(repeat: true,controller:widget.index.isOdd ? _animationController:null,widget.controller.onboardingPages[widget.index].animationAsset!));
   }

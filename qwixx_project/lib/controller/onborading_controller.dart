@@ -1,19 +1,27 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:qwixx_project/model/onboarding_model.dart';
+import 'package:shake/shake.dart';
 
 
 class OnboardingController extends ChangeNotifier {
   int currentPage = 0;
+  OnboardingController();
   PageController pageController = PageController(initialPage: 0);
-  void forward() {
+  void forward( ) {
+    
     if (currentPage < onboardingPages.length - 1) {
+      
+            currentPage++;
+
       pageController.nextPage(
           duration: const Duration(milliseconds: 600), curve: Curves.easeIn);
-      currentPage++;
+      
       notifyListeners();
     }
   }
-
+  void listenShake(ShakeDetector shakeDetector){
+    shakeDetector.startListening();
+  }
   void updatePage(int index) {
     currentPage = index;
     notifyListeners();
@@ -41,9 +49,50 @@ class OnboardingController extends ChangeNotifier {
 }
 
 class ChangeTheme extends ChangeNotifier {
-  bool isLight = true;
-  void changeTheme() {
+  bool isLight;
+  ChangeTheme(this.isLight);
+  void changeTheme() async {
     isLight = !isLight;
     notifyListeners();
+  }
+   ThemeData get currentTheme=> !isLight ? lightTheme(): darkTheme();
+  
+  ThemeData lightTheme() {
+    return ThemeData(
+      
+      textTheme: const TextTheme(
+        
+        headline6: TextStyle(
+          
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        bodyText1: TextStyle(
+          fontSize: 16,
+          color: Colors.black,
+        ),
+      )
+    );
+  }
+
+  ThemeData darkTheme() {
+    return ThemeData.dark().copyWith(
+  
+      
+      textTheme: const TextTheme(
+        headline6: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        bodyText1: TextStyle(
+          fontSize: 16,
+          color: Colors.black,
+        ),
+      )
+    
+      
+    );
   }
 }
