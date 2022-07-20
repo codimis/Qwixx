@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:qwixx_project/controller/onborading_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'controller/theme_controller.dart';
 import 'view/splashScreen.dart';
 
 void main() {

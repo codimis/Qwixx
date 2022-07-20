@@ -8,6 +8,7 @@ import 'package:qwixx_project/controller/onborading_controller.dart';
 import 'package:shake/shake.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../controller/theme_controller.dart';
 import 'home_view.dart';
 
 
@@ -102,7 +103,7 @@ class LeftCornerWidget extends StatelessWidget {
         width: 12,
         height: 12,
         decoration:  BoxDecoration(
-          color: (index==Provider.of<OnboardingController>(context).currentPage)?Colors.red:Colors.grey,
+          color: (index==context.read<OnboardingController>().currentPage)?Colors.red:Colors.grey,
           shape:BoxShape.circle
         ),
       )))),
@@ -120,7 +121,7 @@ class RightCornerButtonWidget extends StatelessWidget {
     return Positioned(bottom: 20,right:20,child: FloatingActionButton(
 
       onPressed: Provider.of<OnboardingController>(context).currentPage==2? () async {
-        
+      context.read<OnboardingController>().currentPage=0; 
       Navigator.pushReplacement(
       context, MaterialPageRoute(builder: (context) => const HomeView()));
       

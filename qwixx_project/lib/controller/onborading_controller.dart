@@ -14,7 +14,8 @@ class OnboardingController extends ChangeNotifier {
             currentPage++;
 
       pageController.nextPage(
-          duration: const Duration(milliseconds: 600), curve: Curves.easeIn);
+          duration: const Duration(milliseconds: 600), curve: Curves.easeIn
+      );
       
       notifyListeners();
     }
@@ -48,51 +49,3 @@ class OnboardingController extends ChangeNotifier {
   
 }
 
-class ChangeTheme extends ChangeNotifier {
-  bool isLight;
-  ChangeTheme(this.isLight);
-  void changeTheme() async {
-    isLight = !isLight;
-    notifyListeners();
-  }
-   ThemeData get currentTheme=> !isLight ? lightTheme(): darkTheme();
-  
-  ThemeData lightTheme() {
-    return ThemeData(
-      
-      textTheme: const TextTheme(
-        
-        headline6: TextStyle(
-          
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-        bodyText1: TextStyle(
-          fontSize: 16,
-          color: Colors.black,
-        ),
-      )
-    );
-  }
-
-  ThemeData darkTheme() {
-    return ThemeData.dark().copyWith(
-  
-      
-      textTheme: const TextTheme(
-        headline6: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-        bodyText1: TextStyle(
-          fontSize: 16,
-          color: Colors.black,
-        ),
-      )
-    
-      
-    );
-  }
-}
