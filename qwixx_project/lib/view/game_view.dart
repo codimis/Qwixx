@@ -19,18 +19,29 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
   late AnimationController _animationControllerTimer;
   late int counterTime = 0;
   bool timer = false;
+  bool isTimeFinished=false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     location();
     animateDice();
-    _animationControllerTimer = AnimationController(vsync: this);
+    animationTime();
     _shakeDetector = ShakeDetector.autoStart(onPhoneShake: () {
       roll();
     });
   }
-
+  animationTime(){
+      _animationControllerTimer = AnimationController(vsync: this);
+      _animationControllerTimer.addListener(() { 
+        if(_animationControllerTimer.value==0){
+          setState(() {
+            isTimeFinished=true;
+          });
+        }
+      });
+  
+  }
   void animateDice() {
     _animationControllerDice = AnimationController(
       vsync: this,
@@ -45,6 +56,13 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
         _animationControllerDice.reverse();
       }
     });
+  }
+  void finishTimer(){
+    if(timeSetted&&countText=="0"){
+      setState((){
+          isTimeFinished=true;
+      });
+    }
   }
 
   String get countText {
@@ -81,8 +99,9 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
   bool green = true;
   bool yellow = true;
   void roll() {
-    _animationControllerDice.forward();
-   
+    
+    if(isTimeFinished==false){
+      _animationControllerDice.forward();
     setState(() {
       isRolled = true;
        if (isRolled&&timeSetted) {
@@ -99,10 +118,12 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
       yellowDice = Random().nextInt(6) + 1;
     });
   }
+  }
 
   refreshColor() {
     setState(() {
       _animationControllerTimer.reset();
+      isTimeFinished=false;
 
       isRolled = false;
       red = true;
@@ -165,80 +186,84 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
       ),
       body: SafeArea(
         child: SizedBox(
+          
           height: (_animationControllerDice.value == 0
                   ? 1
                   : _animationControllerDice.value) *
               MediaQuery.of(context).size.height,
-          child: Column(children: [
-            Flexible(
-              flex: 2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                      fit: FlexFit.tight,
-                      child: Image.asset(
-                          "assets/image/whiteDice/dice-png-$firstWhiteDice.png")),
-                  Flexible(
-                      fit: FlexFit.tight,
-                      child: Image.asset(
-                          "assets/image/whiteDice/dice-png-$secondWhiteDice.png")),
-                ],
+          child: Container(
+            color:isTimeFinished?Colors.red:null,
+            child: Column(children: [
+              Flexible(
+                flex: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                        fit: FlexFit.tight,
+                        child: Image.asset(
+                            "assets/image/whiteDice/dice-png-$firstWhiteDice.png")),
+                    Flexible(
+                        fit: FlexFit.tight,
+                        child: Image.asset(
+                            "assets/image/whiteDice/dice-png-$secondWhiteDice.png")),
+                  ],
+                ),
               ),
-            ),
-            Flexible(
-              flex: 2,
-              child: Row(children: [
-                blue
-                    ? Flexible(
-                        fit: FlexFit.tight,
-                        child: InkWell(
-                            onTap: () => deleteColor("blue"),
-                            child: Image.asset(
-                                "assets/image/blueDice/blue$blueDice.png")))
-                    : Container(),
-                green
-                    ? Flexible(
-                        fit: FlexFit.tight,
-                        child: InkWell(
-                            onTap: () => deleteColor("green"),
-                            child: Image.asset(
-                                "assets/image/greenDice/green$greenDice.png")))
-                    : Container(),
-              ]),
-            ),
-            Flexible(
-              flex: 2,
-              child: Row(children: [
-                red
-                    ? Flexible(
-                        fit: FlexFit.tight,
-                        child: InkWell(
-                            onTap: () => deleteColor("red"),
-                            child: Image.asset(
-                                "assets/image/redDice/red$redDice.png")))
-                    : Container(),
-                yellow
-                    ? Flexible(
-                        fit: FlexFit.tight,
-                        child: InkWell(
-                            onTap: (() => deleteColor("yellow")),
-                            child: Image.asset(
-                                "assets/image/yellowDice/yellow$yellowDice.png")))
-                    : Container(),
-              ]),
-            ),
-            Flexible(
-              flex: 1,
-              child: ElevatedButton(
-                onPressed: () {
-                  roll();
-                },
-                style: Theme.of(context).elevatedButtonTheme.style,
-                child: const Text("Roll"),
+              Flexible(
+                flex: 2,
+                child: Row(children: [
+                  blue
+                      ? Flexible(
+                          fit: FlexFit.tight,
+                          child: InkWell(
+                              onTap: () => deleteColor("blue"),
+                              child: Image.asset(
+                                  "assets/image/blueDice/blue$blueDice.png")))
+                      : Container(),
+                  green
+                      ? Flexible(
+                          fit: FlexFit.tight,
+                          child: InkWell(
+                              onTap: () => deleteColor("green"),
+                              child: Image.asset(
+                                  "assets/image/greenDice/green$greenDice.png")))
+                      : Container(),
+                ]),
               ),
-            ),
-          ]),
+              Flexible(
+                flex: 2,
+                child: Row(children: [
+                  red
+                      ? Flexible(
+                          fit: FlexFit.tight,
+                          child: InkWell(
+                              onTap: () => deleteColor("red"),
+                              child: Image.asset(
+                                  "assets/image/redDice/red$redDice.png")))
+                      : Container(),
+                  yellow
+                      ? Flexible(
+                          fit: FlexFit.tight,
+                          child: InkWell(
+                              onTap: (() => deleteColor("yellow")),
+                              child: Image.asset(
+                                  "assets/image/yellowDice/yellow$yellowDice.png")))
+                      : Container(),
+                ]),
+              ),
+              Flexible(
+                flex: 1,
+                child: ElevatedButton(
+                  onPressed: () {
+                    roll();
+                  },
+                  style: Theme.of(context).elevatedButtonTheme.style,
+                  child: const Text("Roll"),
+                ),
+              ),
+            ]),
+          ),
         ),
       ),
     );
