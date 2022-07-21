@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:qwixx_project/view/game_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home_view.dart';
@@ -16,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-      const Duration(milliseconds: 1250),
+      const Duration(seconds: 3),
       () async {
         await navigatorConditions();
       },
@@ -41,11 +43,16 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement (
           context, MaterialPageRoute(builder: (context) => const FirstOnboardingScreen()));
     }
+    if (locations == "gameScreen") {
+      Navigator.pushReplacement (
+          context, MaterialPageRoute(builder: (context) => const GameView()));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(child: SizedBox(width:MediaQuery.of(context).size.width,height:MediaQuery.of(context).size.height/2,child: CircleAvatar(backgroundImage:Image.asset(fit:BoxFit.contain,"assets/image/firstScreen.jpg").image))));
+        body: Center(child: Lottie.asset('assets/animation/splashAnimation.json'))
+        );
   }
 }

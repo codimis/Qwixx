@@ -70,7 +70,11 @@ flutter:
   assets:
     - assets/animation/
     - assets/image/
-
+    - assets/image/blueDice/
+    - assets/image/whiteDice/
+    - assets/image/yellowDice/
+    - assets/image/greenDice/
+    - assets/image/redDice/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

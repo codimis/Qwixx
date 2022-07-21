@@ -13,15 +13,12 @@ class ChangeTheme extends ChangeNotifier {
     return ThemeData(
       backgroundColor: Colors.grey[200],
       appBarTheme: const AppBarTheme(
-        
         color: Colors.grey,
         titleTextStyle: TextStyle(
           color: Colors.black,
           fontSize: 20,
         ),
         ),
-      
-    
       textTheme: const TextTheme(
         
         headline6: TextStyle(
@@ -63,11 +60,17 @@ class ChangeTheme extends ChangeNotifier {
         headline6: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: Colors.white,
+        ),
+        headline3: TextStyle(
+          fontSize: 45,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Pacifico',
+          color: Colors.white,
         ),
         bodyText1: TextStyle(
           fontSize: 16,
-          color: Colors.black,
+          color: Colors.white,
         ),
       ),
       buttonTheme: const ButtonThemeData(

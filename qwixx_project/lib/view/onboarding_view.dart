@@ -1,6 +1,7 @@
 
 // ignore_for_file: depend_on_referenced_packages
 
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -78,9 +79,11 @@ class _FirstOnboardingScreenState extends State<FirstOnboardingScreen> {
     );
   }
 
-  Text descriptionText(int index, BuildContext context) => Text(controller.onboardingPages[index].description ,style:Theme.of(context).textTheme.bodyText1,textAlign: TextAlign.center,);
+  Text descriptionText(int index, BuildContext context) {
+    return Text(controller.onboardingPages[index].description,style: const TextStyle(fontSize: 16) ,textAlign: TextAlign.center,);
+  }
 
-  Text headlineText(int index, BuildContext context) => Text(controller.onboardingPages[index].title,style: Theme.of(context).textTheme.headline6,textAlign: TextAlign.center);
+  Text headlineText(int index, BuildContext context) => Text(controller.onboardingPages[index].title,style: const TextStyle(fontSize: 24,fontWeight: FontWeight.bold),textAlign: TextAlign.center);
 
 }
 
@@ -120,14 +123,17 @@ class RightCornerButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(bottom: 20,right:20,child: FloatingActionButton(
 
-      onPressed: Provider.of<OnboardingController>(context).currentPage==2? () async {
+      onPressed: Provider.of<OnboardingController>(context).currentPage==2? () {
       context.read<OnboardingController>().currentPage=0; 
       Navigator.pushReplacement(
       context, MaterialPageRoute(builder: (context) => const HomeView()));
-      
+      shakeDetector.stopListening();
       }:(){
         Provider.of<OnboardingController>(context,listen:false).forward();
-        shakeDetector.startListening();
+        if(Provider.of<OnboardingController>(context,listen:false).currentPage==2){
+          shakeDetector.startListening();
+        }
+        
 
       },
       elevation: 0,
@@ -159,17 +165,14 @@ class _AnimationWidgetState extends State<AnimationWidget> with TickerProviderSt
   @override
   Widget build(BuildContext context) {
     return InkWell( onTap: widget.index.isOdd ?() async {
+      !context.read<ChangeTheme>().isLight ? _animationController.animateTo(0.5):_animationController.animateBack(0);
       Future.microtask(() async => 
            context.read<ChangeTheme>().changeTheme()
 
       );
-      !context.read<ChangeTheme>().isLight ? _animationController.animateTo(0.5):_animationController.animateBack(0);
+      
       final prefs = await SharedPreferences.getInstance();
-
     await prefs.setBool('darkMode', context.read<ChangeTheme>().isLight);
-
-
-  
     }:null,child: Lottie.asset(repeat: true,controller:widget.index.isOdd ? _animationController:null,widget.controller.onboardingPages[widget.index].animationAsset!));
   }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import "package:lottie/lottie.dart";
 import 'package:provider/provider.dart';
 import 'package:qwixx_project/view/rules_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controller/theme_controller.dart';
+import 'game_choose_dart.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -34,9 +36,7 @@ class _HomeViewState extends State<HomeView> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Image.asset(fit: BoxFit.cover, "assets/image/qwixx.jfif")),
+          const TopWidget(),
           const ButtonsRowWidget(),
           Padding(
             padding: const EdgeInsets.only(top: 50),
@@ -54,6 +54,23 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
     ));
+  }
+}
+
+class TopWidget extends StatelessWidget {
+  const TopWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      SizedBox(height:MediaQuery.of(context).size.height*0.4,child: Lottie.asset("assets/animation/homeAnimation.json")),
+      Text(
+        "Qwixx",
+        style: Theme.of(context).textTheme.headline3,
+      )
+    ]);
   }
 }
 
@@ -112,7 +129,12 @@ class StartGameButtonWidget extends StatelessWidget {
         style: Theme.of(context).elevatedButtonTheme.style,
         child: const Text("Start Game"),
         onPressed: () {
-          Navigator.pushNamed(context, "/game");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const GameChoose(),
+            ),
+          );
         },
       ),
     );
