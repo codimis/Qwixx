@@ -9,6 +9,7 @@ import 'package:qwixx_project/controller/onborading_controller.dart';
 import 'package:shake/shake.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../controller/setLoacation.dart';
 import '../controller/theme_controller.dart';
 import 'home_view.dart';
 
@@ -27,7 +28,7 @@ class _FirstOnboardingScreenState extends State<FirstOnboardingScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    location();
+    Location.location("onBoarding");
      shakeDetector=ShakeDetector.waitForStart(onPhoneShake: (){
        Navigator.pushReplacement(
        context, MaterialPageRoute(builder: (context) => const HomeView()));
@@ -42,10 +43,6 @@ class _FirstOnboardingScreenState extends State<FirstOnboardingScreen> {
     super.dispose();
   }
   
-  void location() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setString('locations', "onBoarding");
-  }
 
 
   @override

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:qwixx_project/view/rules_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../controller/setLoacation.dart';
 import '../controller/theme_controller.dart';
 import 'game_choose_dart.dart';
 
@@ -20,13 +21,9 @@ class _HomeViewState extends State<HomeView> {
   initState() {
     // TODO: implement initState
     super.initState();
-    location();
+    Location.location("HomeScreen");
   }
 
-  void location() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setString('locations', "HomeScreen");
-  }
 
   @override
   Widget build(BuildContext context) {

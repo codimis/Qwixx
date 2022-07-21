@@ -1,9 +1,10 @@
 import "dart:math";
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:shake/shake.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../controller/setLoacation.dart';
 import 'home_view.dart';
 
 class GameView extends StatefulWidget {
@@ -17,20 +18,42 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
   late ShakeDetector _shakeDetector;
   late AnimationController _animationControllerDice;
   late AnimationController _animationControllerTimer;
+  String diceAudioPath="https://www.youtube.com/watch?v=KY4hU1BYWEc";
   late int counterTime = 0;
-  bool timer = false;
   bool isTimeFinished=false;
+  bool timeSetted = false;
+  bool isRolled = false;
+  int firstWhiteDice = 1;
+  int secondWhiteDice = 1;
+  int greenDice = 1;
+  int redDice = 1;
+  int blueDice = 1;
+  int yellowDice = 1;
+  bool red = true;
+  bool blue = true;
+  bool green = true;
+  bool yellow = true;
+  final player = AudioPlayer();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    location();
+    Location.location("gameScreen");
     animateDice();
     animationTime();
     _shakeDetector = ShakeDetector.autoStart(onPhoneShake: () {
       roll();
     });
   }
+
+   Future<void> diceSound() async {
+    print("here");
+    Source src=UrlSource(diceAudioPath);
+    await player.play(src);
+
+  }
+
+
   animationTime(){
       _animationControllerTimer = AnimationController(vsync: this);
       _animationControllerTimer.addListener(() { 
@@ -71,10 +94,6 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
     return count.inSeconds.toString();
   }
 
-  void location() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setString('locations', "gameScreen");
-  }
 
   @override
   void dispose() {
@@ -85,23 +104,11 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
     _animationControllerTimer.dispose();
   }
 
-  bool okay = true;
-  bool timeSetted = false;
-  bool isRolled = false;
-  int firstWhiteDice = 1;
-  int secondWhiteDice = 1;
-  int greenDice = 1;
-  int redDice = 1;
-  int blueDice = 1;
-  int yellowDice = 1;
-  bool red = true;
-  bool blue = true;
-  bool green = true;
-  bool yellow = true;
-  void roll() {
+  Future<void> roll() async {
     
     if(isTimeFinished==false){
       _animationControllerDice.forward();
+      await diceSound();
     setState(() {
       isRolled = true;
        if (isRolled&&timeSetted) {
