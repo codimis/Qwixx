@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:qwixx_project/view/game_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home_view.dart';
@@ -42,10 +41,6 @@ class _SplashScreenState extends State<SplashScreen> {
     if (locations != "onBoarding" && locations == null) {
       Navigator.pushReplacement (
           context, MaterialPageRoute(builder: (context) => const FirstOnboardingScreen()));
-    }
-    if (locations == "gameScreen") {
-      Navigator.pushReplacement (
-          context, MaterialPageRoute(builder: (context) => const GameView()));
     }
   }
 

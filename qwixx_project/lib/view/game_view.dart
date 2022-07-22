@@ -1,166 +1,68 @@
-import "dart:math";
-
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:shake/shake.dart';
+import 'package:provider/provider.dart';
 
-import '../controller/setLoacation.dart';
+import '../controller/game_controller.dart';
 import 'home_view.dart';
 
+
+
 class GameView extends StatefulWidget {
-  const GameView({Key? key}) : super(key: key);
+  final bool side;
+
+  const GameView({Key? key,required this.side}) : super(key: key);
 
   @override
   State<GameView> createState() => _GameViewState();
 }
 
-class _GameViewState extends State<GameView> with TickerProviderStateMixin {
-  late ShakeDetector _shakeDetector;
-  late AnimationController _animationControllerDice;
+class _GameViewState extends State<GameView> with TickerProviderStateMixin{
   late AnimationController _animationControllerTimer;
-  String diceAudioPath="https://www.youtube.com/watch?v=KY4hU1BYWEc";
-  late int counterTime = 0;
   bool isTimeFinished=false;
-  bool timeSetted = false;
-  bool isRolled = false;
-  int firstWhiteDice = 1;
-  int secondWhiteDice = 1;
-  int greenDice = 1;
-  int redDice = 1;
-  int blueDice = 1;
-  int yellowDice = 1;
-  bool red = true;
-  bool blue = true;
-  bool green = true;
-  bool yellow = true;
-  final player = AudioPlayer();
+ int counterTime = 0;
+   late bool timeSetted=false;
+  late bool isRolled=false;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Location.location("gameScreen");
-    animateDice();
     animationTime();
-    _shakeDetector = ShakeDetector.autoStart(onPhoneShake: () {
-      roll();
-    });
-  }
-
-   Future<void> diceSound() async {
-    print("here");
-    Source src=UrlSource(diceAudioPath);
-    await player.play(src);
 
   }
 
-
-  animationTime(){
+   void animationTime(){
       _animationControllerTimer = AnimationController(vsync: this);
       _animationControllerTimer.addListener(() { 
         if(_animationControllerTimer.value==0){
           setState(() {
-            isTimeFinished=true;
+                isTimeFinished=true;
+
           });
         }
       });
+  }
+
+
   
-  }
-  void animateDice() {
-    _animationControllerDice = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
-    _animationControllerDice.addListener(() {
-      setState(() {});
-    });
-
-    _animationControllerDice.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _animationControllerDice.reverse();
-      }
-    });
-  }
-  void finishTimer(){
-    if(timeSetted&&countText=="0"){
-      setState((){
-          isTimeFinished=true;
-      });
-    }
-  }
-
   String get countText {
-    Duration count =
+
+          Duration count =
         _animationControllerTimer.duration! * _animationControllerTimer.value;
-    return count.inSeconds.toString();
+        return count.inSeconds.toString();
+
   }
-
-
-  @override
+   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _shakeDetector.stopListening();
-    _animationControllerDice.dispose();
-    _animationControllerTimer.dispose();
   }
 
-  Future<void> roll() async {
-    
-    if(isTimeFinished==false){
-      _animationControllerDice.forward();
-      await diceSound();
-    setState(() {
-      isRolled = true;
-       if (isRolled&&timeSetted) {
-      _animationControllerTimer.reverse(
-          from: _animationControllerTimer.value == 0
-              ? 1
-              : _animationControllerTimer.value);
-    }
-      firstWhiteDice = Random().nextInt(6) + 1;
-      secondWhiteDice = Random().nextInt(6) + 1;
-      greenDice = Random().nextInt(6) + 1;
-      redDice = Random().nextInt(6) + 1;
-      blueDice = Random().nextInt(6) + 1;
-      yellowDice = Random().nextInt(6) + 1;
-    });
-  }
-  }
 
-  refreshColor() {
-    setState(() {
-      _animationControllerTimer.reset();
-      isTimeFinished=false;
 
-      isRolled = false;
-      red = true;
-      blue = true;
-      green = true;
-      yellow = true;
-    });
-  }
-
-  deleteColor(String color) {
-    setState(() {
-      if (color == "red") {
-        red = false;
-      }
-      if (color == "blue") {
-        blue = false;
-      }
-      if (color == "green") {
-        green = false;
-      }
-      if (color == "yellow") {
-        yellow = false;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+      return Scaffold(
+        appBar: AppBar(
         centerTitle: true,
         title: timeSetted
             ? AnimatedBuilder(
@@ -172,6 +74,7 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
+            
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const HomeView()));
           },
@@ -180,7 +83,14 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
-              refreshColor();
+              Provider.of<EightSideDiceController>(context, listen: false).enableAllDice();
+              isRolled=false;
+              setState(() {
+                  _animationControllerTimer.reset();
+                  isTimeFinished=false;
+              });
+            
+
             },
           ),
           IconButton(
@@ -190,14 +100,10 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
             },
           )
         ],
-      ),
+      ), 
       body: SafeArea(
         child: SizedBox(
-          
-          height: (_animationControllerDice.value == 0
-                  ? 1
-                  : _animationControllerDice.value) *
-              MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height,
           child: Container(
             color:isTimeFinished?Colors.red:null,
             child: Column(children: [
@@ -205,57 +111,59 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
                 flex: 2,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children:  const [
                     Flexible(
                         fit: FlexFit.tight,
-                        child: Image.asset(
-                            "assets/image/whiteDice/dice-png-$firstWhiteDice.png")),
+                        child:NumberWidget(color:Colors.white,number: 0,) 
+                        
+                            ),
                     Flexible(
                         fit: FlexFit.tight,
-                        child: Image.asset(
-                            "assets/image/whiteDice/dice-png-$secondWhiteDice.png")),
+                        child:NumberWidget(color:Colors.white,number: 1,) 
+                        
+                    ),
                   ],
                 ),
               ),
               Flexible(
                 flex: 2,
                 child: Row(children: [
-                  blue
+                   Provider.of<EightSideDiceController>(context,listen:true).dices[2].enable
                       ? Flexible(
-                          fit: FlexFit.tight,
-                          child: InkWell(
-                              onTap: () => deleteColor("blue"),
-                              child: Image.asset(
-                                  "assets/image/blueDice/blue$blueDice.png")))
+                        fit:FlexFit.tight,
+                        child: InkWell(
+                            onTap: () => Provider.of<EightSideDiceController>(context,listen:false).disableDice(2),
+                            child:const NumberWidget(color:Colors.blue,number: 2,) ),
+                      )
                       : Container(),
-                  green
+                  Provider.of<EightSideDiceController>(context,listen:false).dices[3].enable
                       ? Flexible(
                           fit: FlexFit.tight,
                           child: InkWell(
-                              onTap: () => deleteColor("green"),
-                              child: Image.asset(
-                                  "assets/image/greenDice/green$greenDice.png")))
+                              onTap: () {Provider.of<EightSideDiceController>(context,listen:false).disableDice(3);setState(){}},
+                              child:const NumberWidget(color:Colors.green,number: 3,) )
+                      )
                       : Container(),
                 ]),
               ),
               Flexible(
                 flex: 2,
                 child: Row(children: [
-                  red
+                  Provider.of<EightSideDiceController>(context,listen:false).dices[4].enable
                       ? Flexible(
                           fit: FlexFit.tight,
                           child: InkWell(
-                              onTap: () => deleteColor("red"),
-                              child: Image.asset(
-                                  "assets/image/redDice/red$redDice.png")))
+                              onTap: () => Provider.of<EightSideDiceController>(context,listen:false).disableDice(4),
+                              child: const NumberWidget(color:Colors.red,number: 4,))
+                      )
                       : Container(),
-                  yellow
+                  Provider.of<EightSideDiceController>(context,listen:false).dices[5].enable
                       ? Flexible(
                           fit: FlexFit.tight,
                           child: InkWell(
-                              onTap: (() => deleteColor("yellow")),
-                              child: Image.asset(
-                                  "assets/image/yellowDice/yellow$yellowDice.png")))
+                              onTap: (() => Provider.of<EightSideDiceController>(context,listen:false).disableDice(5)),
+                              child: const NumberWidget(color:Colors.yellow,number: 5,) )
+                      )
                       : Container(),
                 ]),
               ),
@@ -263,7 +171,12 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
                 flex: 1,
                 child: ElevatedButton(
                   onPressed: () {
-                    roll();
+                    Provider.of<EightSideDiceController>(context,listen:false).rollDice(isTimeFinished,isRolled,timeSetted,_animationControllerTimer,widget.side);
+                       if(isTimeFinished==true){
+                        isRolled=false;
+                        timeSetted=true;
+                        isTimeFinished=false;
+                      }
                   },
                   style: Theme.of(context).elevatedButtonTheme.style,
                   child: const Text("Roll"),
@@ -273,8 +186,11 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
           ),
         ),
       ),
-    );
+
+      );
   }
+
+
 
   Future<dynamic> dialogMessages(BuildContext context) {
     return showDialog(
@@ -293,19 +209,19 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
                       onChanged: (value) {
                         setState(() {
                           if (value == "") {
-                            timeSetted = false;
+                            timeSetted=false;
                             counterTime = 0;
                           } else if (value == "0") {
-                            timeSetted = false;
+                            timeSetted=false;
                             counterTime = 0;
                           } else {
                             counterTime = int.parse(value);
                             print(value);
                             _animationControllerTimer.duration =
                                 Duration(seconds: int.parse(value));
+                                timeSetted=true;
+                                isRolled=false;
 
-                            timeSetted = true;
-                            isRolled = false;
                           }
                         });
                       },
@@ -320,5 +236,18 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin {
                       },
                       child: const Text("Okay"))
                 ]));
+  }
+}
+
+class NumberWidget extends StatelessWidget {
+  final number;
+  final color;
+  const NumberWidget({
+    Key? key, this.number, this.color,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(padding:const EdgeInsets.all(10),child: Image.asset(Provider.of<EightSideDiceController>(context,listen:true).refreshDice(number)));
   }
 }

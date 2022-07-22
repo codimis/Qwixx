@@ -23,7 +23,7 @@ class _GameChooseState extends State<GameChoose> {
               onTap: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const GameView()),
+                  MaterialPageRoute(builder: (context) => const GameView(side:true)),
                 );
               },
               child: Card(
@@ -42,10 +42,10 @@ class _GameChooseState extends State<GameChoose> {
           flex:1,
            child: InkWell(
               onTap: (){
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => const GameChooseDart()),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>  const GameView(side: false)),
+                );
               },
               child: Card(
                 child: Column(children: [
