@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shake/shake.dart';
 
 import '../controller/game_controller.dart';
 import 'home_view.dart';
@@ -21,14 +22,25 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin{
  int counterTime = 0;
    late bool timeSetted=false;
   late bool isRolled=false;
-
+  late ShakeDetector detector;
   @override
   void initState() {
     super.initState();
     animationTime();
+    shake();
 
   }
+  void shake(){
+    ShakeDetector detector = ShakeDetector.autoStart(
+    onPhoneShake: () {
+    Provider.of<EightSideDiceController>(context, listen: false).rollDice(isTimeFinished,isRolled,timeSetted,_animationControllerTimer,widget.side);
+    },
+    );
+    
+    }
 
+
+  
    void animationTime(){
       _animationControllerTimer = AnimationController(vsync: this);
       _animationControllerTimer.addListener(() { 
@@ -42,6 +54,12 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin{
   }
 
 
+  @override
+  void dispose() {
+    _animationControllerTimer.dispose();
+    detector.stopListening();
+    super.dispose();
+  }
   
   String get countText {
 
@@ -50,12 +68,6 @@ class _GameViewState extends State<GameView> with TickerProviderStateMixin{
         return count.inSeconds.toString();
 
   }
-   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
 
 
 
