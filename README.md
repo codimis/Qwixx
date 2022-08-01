@@ -14,7 +14,7 @@
 - You have to download Flutter SDK (https://docs.flutter.dev/development/tools/sdk/releases?tab=windows) in here and successfully complete what flutter wants. (You need to add flutter path in your system paths and then you can see the requirements by typing flutter doctor on command line).
 - After all the packages are loaded in VsCode , connect the device and type the command Flutter Run on your terminal and wait for the App to install .
 
-<h2>Application Content</h2>
+<h2>com.grpc.Application Content</h2>
 
 - When the user enters the application, he chooses how many sided dice he wants to play with. The game offers two types of dice, 6-sided or 8-sided. The user can choose one of these two values.
 - On the next screen, the user chooses whether he wants to play the game for a limited or unlimited. If the user will play the game for a while, this information is obtained from the time selection screen on the next screen. The user only gives minute and second information.
