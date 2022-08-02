@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shake/shake.dart';
 
+import '../client_server/ClientServer.dart';
 import '../controller/game_controller.dart';
 import 'home_view.dart';
 
@@ -19,6 +20,7 @@ class GameView extends StatefulWidget {
 class _GameViewState extends State<GameView> with TickerProviderStateMixin{
   late AnimationController _animationControllerTimer;
   bool isTimeFinished=false;
+    final client = createClient();
  int counterTime = 0;
    late bool timeSetted=false;
   late bool isRolled=false;

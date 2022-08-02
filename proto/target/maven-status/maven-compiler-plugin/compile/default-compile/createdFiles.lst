@@ -1,5 +1,6 @@
 com\grpc\UserList$Builder.class
 com\grpc\UserListOrBuilder.class
+com\grpc\Time$1.class
 com\grpc\Dice$Type$1.class
 com\grpc\Response.class
 com\grpc\QwixxServiceGrpc$QwixxServiceFutureStub.class
@@ -23,8 +24,11 @@ com\grpc\UserList.class
 com\grpc\Schema$1.class
 com\grpc\Empty$1.class
 com\grpc\QwixxServiceGrpc$QwixxServiceImplBase.class
+com\grpc\Time$Builder.class
 com\grpc\Room$1.class
+com\grpc\TimeOrBuilder.class
 com\grpc\EmptyOrBuilder.class
+com\grpc\Time.class
 com\grpc\QwixxServiceGrpc$QwixxServiceDescriptorSupplier.class
 com\grpc\Dice.class
 com\grpc\RoomOrBuilder.class

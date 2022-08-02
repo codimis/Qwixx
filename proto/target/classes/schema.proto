@@ -41,6 +41,10 @@ message Response{
   int32 error=1;
   string msg=2;
 }
+message Time{
+  int32 Time=1;
+  Room room=2;
+}
 
 service QwixxService {
   rpc join(User) returns (Response) {}
@@ -50,4 +54,6 @@ service QwixxService {
   rpc currentUser(Room) returns (User){}
   rpc rollDice(User) returns (Empty) {}
   rpc receiveRollDice (Room) returns (stream User) {}
+  rpc setTime(Time) returns (Empty){}
+  rpc startTimer(Room) returns (stream Time){}
 }

@@ -111,6 +111,30 @@ public final class QwixxServiceGrpc {
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
               com.grpc.User.getDefaultInstance()))
           .build();
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static final io.grpc.MethodDescriptor<com.grpc.Time,
+      com.grpc.Empty> METHOD_SET_TIME =
+      io.grpc.MethodDescriptor.<com.grpc.Time, com.grpc.Empty>newBuilder()
+          .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+          .setFullMethodName(generateFullMethodName(
+              "com.grpc.QwixxService", "setTime"))
+          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              com.grpc.Time.getDefaultInstance()))
+          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              com.grpc.Empty.getDefaultInstance()))
+          .build();
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static final io.grpc.MethodDescriptor<com.grpc.Room,
+      com.grpc.Time> METHOD_START_TIMER =
+      io.grpc.MethodDescriptor.<com.grpc.Room, com.grpc.Time>newBuilder()
+          .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+          .setFullMethodName(generateFullMethodName(
+              "com.grpc.QwixxService", "startTimer"))
+          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              com.grpc.Room.getDefaultInstance()))
+          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              com.grpc.Time.getDefaultInstance()))
+          .build();
 
   /**
    * Creates a new async stub that supports all call types for the service
@@ -188,6 +212,20 @@ public final class QwixxServiceGrpc {
       asyncUnimplementedUnaryCall(METHOD_RECEIVE_ROLL_DICE, responseObserver);
     }
 
+    /**
+     */
+    public void setTime(com.grpc.Time request,
+        io.grpc.stub.StreamObserver<com.grpc.Empty> responseObserver) {
+      asyncUnimplementedUnaryCall(METHOD_SET_TIME, responseObserver);
+    }
+
+    /**
+     */
+    public void startTimer(com.grpc.Room request,
+        io.grpc.stub.StreamObserver<com.grpc.Time> responseObserver) {
+      asyncUnimplementedUnaryCall(METHOD_START_TIMER, responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -239,6 +277,20 @@ public final class QwixxServiceGrpc {
                 com.grpc.Room,
                 com.grpc.User>(
                   this, METHODID_RECEIVE_ROLL_DICE)))
+          .addMethod(
+            METHOD_SET_TIME,
+            asyncUnaryCall(
+              new MethodHandlers<
+                com.grpc.Time,
+                com.grpc.Empty>(
+                  this, METHODID_SET_TIME)))
+          .addMethod(
+            METHOD_START_TIMER,
+            asyncServerStreamingCall(
+              new MethodHandlers<
+                com.grpc.Room,
+                com.grpc.Time>(
+                  this, METHODID_START_TIMER)))
           .build();
     }
   }
@@ -316,6 +368,22 @@ public final class QwixxServiceGrpc {
       asyncServerStreamingCall(
           getChannel().newCall(METHOD_RECEIVE_ROLL_DICE, getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void setTime(com.grpc.Time request,
+        io.grpc.stub.StreamObserver<com.grpc.Empty> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_SET_TIME, getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void startTimer(com.grpc.Room request,
+        io.grpc.stub.StreamObserver<com.grpc.Time> responseObserver) {
+      asyncServerStreamingCall(
+          getChannel().newCall(METHOD_START_TIMER, getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -385,6 +453,21 @@ public final class QwixxServiceGrpc {
       return blockingServerStreamingCall(
           getChannel(), METHOD_RECEIVE_ROLL_DICE, getCallOptions(), request);
     }
+
+    /**
+     */
+    public com.grpc.Empty setTime(com.grpc.Time request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_SET_TIME, getCallOptions(), request);
+    }
+
+    /**
+     */
+    public java.util.Iterator<com.grpc.Time> startTimer(
+        com.grpc.Room request) {
+      return blockingServerStreamingCall(
+          getChannel(), METHOD_START_TIMER, getCallOptions(), request);
+    }
   }
 
   /**
@@ -452,6 +535,14 @@ public final class QwixxServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_ROLL_DICE, getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.grpc.Empty> setTime(
+        com.grpc.Time request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_SET_TIME, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_JOIN = 0;
@@ -461,6 +552,8 @@ public final class QwixxServiceGrpc {
   private static final int METHODID_CURRENT_USER = 4;
   private static final int METHODID_ROLL_DICE = 5;
   private static final int METHODID_RECEIVE_ROLL_DICE = 6;
+  private static final int METHODID_SET_TIME = 7;
+  private static final int METHODID_START_TIMER = 8;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -507,6 +600,14 @@ public final class QwixxServiceGrpc {
           serviceImpl.receiveRollDice((com.grpc.Room) request,
               (io.grpc.stub.StreamObserver<com.grpc.User>) responseObserver);
           break;
+        case METHODID_SET_TIME:
+          serviceImpl.setTime((com.grpc.Time) request,
+              (io.grpc.stub.StreamObserver<com.grpc.Empty>) responseObserver);
+          break;
+        case METHODID_START_TIMER:
+          serviceImpl.startTimer((com.grpc.Room) request,
+              (io.grpc.stub.StreamObserver<com.grpc.Time>) responseObserver);
+          break;
         default:
           throw new AssertionError();
       }
@@ -547,6 +648,8 @@ public final class QwixxServiceGrpc {
               .addMethod(METHOD_CURRENT_USER)
               .addMethod(METHOD_ROLL_DICE)
               .addMethod(METHOD_RECEIVE_ROLL_DICE)
+              .addMethod(METHOD_SET_TIME)
+              .addMethod(METHOD_START_TIMER)
               .build();
         }
       }

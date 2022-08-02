@@ -6,11 +6,13 @@ import com.grpc.Empty;
 import com.grpc.QwixxServiceGrpc;
 import com.grpc.Response;
 import com.grpc.Room;
+import com.grpc.Time;
 import com.grpc.User;
 import com.grpc.UserList;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -18,6 +20,7 @@ import java.util.stream.Stream;
 public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
      static Map<Room,ArrayList<User>> user=new HashMap<>();
      static Map<Room,Integer> queue=new HashMap<>();
+     static Map<Room,Time> timer=new HashMap<>();
     @Override
     public void getAllUsers(Room request, StreamObserver<UserList> responseObserver) {
 
@@ -55,6 +58,32 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     }
 
     @Override
+    public void setTime(Time request, StreamObserver<Empty> responseObserver) {
+        timer.put(request.getRoom(),request);
+        responseObserver.onNext(Empty.newBuilder().build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void startTimer(Room request, StreamObserver<Time> responseObserver) {
+
+        LocalDateTime deadline= LocalDateTime.now().plusSeconds(timer.get(request).getTime());
+        int timeCount=timer.get(request).getTime();
+        Room room=request;
+        while (LocalDateTime.now().isBefore(deadline)) {
+            responseObserver.onNext(Time.newBuilder().setTime(timeCount).setRoom(room).build());
+            try {
+                Thread.sleep(1000);
+                timeCount--;
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        responseObserver.onCompleted();
+
+    }
+
+    @Override
     public void create(User request, StreamObserver<Response> responseObserver) {
         Room room=Room.newBuilder().setRoomId(request.getRoom().getRoomId()).build();
 
@@ -64,7 +93,7 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
         }else{
             user.put(room,new ArrayList<>());
             user.get(room).add(request);
-            responseObserver.onNext(Response.newBuilder().setMsg("Created Success").setError(1).build());
+            responseObserver.onNext(Response.newBuilder().setMsg("Created Success").setError(0).build());
             queue.put(request.getRoom(),0);
         }
         responseObserver.onCompleted();
