@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import "package:lottie/lottie.dart";
 import 'package:provider/provider.dart';
+import 'package:qwixx_project/view/create_game_view.dart';
 import 'package:qwixx_project/view/rules_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,26 +32,61 @@ class _HomeViewState extends State<HomeView> {
         body: Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const TopWidget(),
-          const ButtonsRowWidget(),
-          Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: ElevatedButton(
-              style: Theme.of(context).elevatedButtonTheme.style,
-              child: const Text("Theme Change"),
-              onPressed: () async {
-                context.read<ChangeTheme>().changeTheme();
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setBool(
-                    'darkMode', context.read<ChangeTheme>().isLight);
-              },
-            ),
-          ),
+        children:   const [
+          TopWidget(),
+          ButtonsRowWidget(),
+          PlayFriendsWidget(),
+           ThemeChangeWidget(),
+
         ],
       ),
     ));
+  }
+}
+
+class PlayFriendsWidget extends StatelessWidget {
+  const PlayFriendsWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: ElevatedButton(onPressed: (){
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CreateGameView(),
+            ),
+          );
+      }, child: const Text("Play with Friends")),
+    );
+  }
+}
+
+class ThemeChangeWidget extends StatelessWidget {
+  const ThemeChangeWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: ElevatedButton(
+        style: Theme.of(context).elevatedButtonTheme.style,
+        child: const Text("Theme Change"),
+        onPressed: () async {
+          context.read<ChangeTheme>().changeTheme();
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setBool(
+              'darkMode', context.read<ChangeTheme>().isLight);
+        },
+      ),
+    );
   }
 }
 
@@ -81,8 +117,10 @@ class ButtonsRowWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 80),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: const [
           StartGameButtonWidget(),
+          SizedBox(width: 20),
           RulesButtonWidget(),
         ],
       ),
