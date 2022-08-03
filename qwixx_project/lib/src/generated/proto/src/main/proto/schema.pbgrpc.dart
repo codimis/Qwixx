@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: src/main/proto/schema.proto
+//  source: proto/src/main/proto/schema.proto
 //
 // @dart = 2.12
 // ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
@@ -66,9 +66,11 @@ class QwixxServiceClient extends $grpc.Client {
     return $createUnaryCall(_$create, request, options: options);
   }
 
-  $grpc.ResponseFuture<$0.UserList> getAllUsers($0.Room request,
+  $grpc.ResponseStream<$0.UserList> getAllUsers($0.Room request,
       {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$getAllUsers, request, options: options);
+    return $createStreamingCall(
+        _$getAllUsers, $async.Stream.fromIterable([request]),
+        options: options);
   }
 
   $grpc.ResponseFuture<$0.User> nextUser($0.User request,
@@ -128,7 +130,7 @@ abstract class QwixxServiceBase extends $grpc.Service {
         'getAllUsers',
         getAllUsers_Pre,
         false,
-        false,
+        true,
         ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
         ($0.UserList value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.User, $0.User>(
@@ -185,9 +187,9 @@ abstract class QwixxServiceBase extends $grpc.Service {
     return create(call, await request);
   }
 
-  $async.Future<$0.UserList> getAllUsers_Pre(
-      $grpc.ServiceCall call, $async.Future<$0.Room> request) async {
-    return getAllUsers(call, await request);
+  $async.Stream<$0.UserList> getAllUsers_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Room> request) async* {
+    yield* getAllUsers(call, await request);
   }
 
   $async.Future<$0.User> nextUser_Pre(
@@ -222,7 +224,7 @@ abstract class QwixxServiceBase extends $grpc.Service {
 
   $async.Future<$0.Response> join($grpc.ServiceCall call, $0.User request);
   $async.Future<$0.Response> create($grpc.ServiceCall call, $0.User request);
-  $async.Future<$0.UserList> getAllUsers(
+  $async.Stream<$0.UserList> getAllUsers(
       $grpc.ServiceCall call, $0.Room request);
   $async.Future<$0.User> nextUser($grpc.ServiceCall call, $0.User request);
   $async.Future<$0.User> currentUser($grpc.ServiceCall call, $0.Room request);

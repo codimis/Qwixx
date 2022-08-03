@@ -49,7 +49,7 @@ message Time{
 service QwixxService {
   rpc join(User) returns (Response) {}
   rpc create(User) returns(Response){}
-  rpc getAllUsers(Room) returns (UserList) {}
+  rpc getAllUsers(Room) returns (stream UserList) {}
   rpc nextUser(User) returns (User){}
   rpc currentUser(Room) returns (User){}
   rpc rollDice(User) returns (Empty) {}

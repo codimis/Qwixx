@@ -21,9 +21,9 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
      static Map<Room,ArrayList<User>> user=new HashMap<>();
      static Map<Room,Integer> queue=new HashMap<>();
      static Map<Room,Time> timer=new HashMap<>();
+
     @Override
     public void getAllUsers(Room request, StreamObserver<UserList> responseObserver) {
-
         List<User> userListed= user.get(request);
         responseObserver.onNext(UserList.newBuilder().addAllUsers(userListed).build());
         responseObserver.onCompleted();
@@ -47,6 +47,7 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     @Override
     public void join(User request, StreamObserver<Response> responseObserver) {
         Room room=Room.newBuilder().setRoomId(request.getRoom().getRoomId()).build();
+
         if(user.containsKey(room)){
 
             user.get(room).add(request);
@@ -80,13 +81,11 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
             }
         }
         responseObserver.onCompleted();
-
     }
 
     @Override
     public void create(User request, StreamObserver<Response> responseObserver) {
         Room room=Room.newBuilder().setRoomId(request.getRoom().getRoomId()).build();
-
         if(user.containsKey(room)){
             responseObserver.onNext(Response.newBuilder().setMsg("Room already Exist").setError(1).build());
 

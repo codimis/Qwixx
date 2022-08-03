@@ -55,7 +55,7 @@ public final class QwixxServiceGrpc {
   public static final io.grpc.MethodDescriptor<com.grpc.Room,
       com.grpc.UserList> METHOD_GET_ALL_USERS =
       io.grpc.MethodDescriptor.<com.grpc.Room, com.grpc.UserList>newBuilder()
-          .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+          .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
           .setFullMethodName(generateFullMethodName(
               "com.grpc.QwixxService", "getAllUsers"))
           .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
@@ -244,7 +244,7 @@ public final class QwixxServiceGrpc {
                   this, METHODID_CREATE)))
           .addMethod(
             METHOD_GET_ALL_USERS,
-            asyncUnaryCall(
+            asyncServerStreamingCall(
               new MethodHandlers<
                 com.grpc.Room,
                 com.grpc.UserList>(
@@ -333,7 +333,7 @@ public final class QwixxServiceGrpc {
      */
     public void getAllUsers(com.grpc.Room request,
         io.grpc.stub.StreamObserver<com.grpc.UserList> responseObserver) {
-      asyncUnaryCall(
+      asyncServerStreamingCall(
           getChannel().newCall(METHOD_GET_ALL_USERS, getCallOptions()), request, responseObserver);
     }
 
@@ -420,8 +420,9 @@ public final class QwixxServiceGrpc {
 
     /**
      */
-    public com.grpc.UserList getAllUsers(com.grpc.Room request) {
-      return blockingUnaryCall(
+    public java.util.Iterator<com.grpc.UserList> getAllUsers(
+        com.grpc.Room request) {
+      return blockingServerStreamingCall(
           getChannel(), METHOD_GET_ALL_USERS, getCallOptions(), request);
     }
 
@@ -502,14 +503,6 @@ public final class QwixxServiceGrpc {
         com.grpc.User request) {
       return futureUnaryCall(
           getChannel().newCall(METHOD_CREATE, getCallOptions()), request);
-    }
-
-    /**
-     */
-    public com.google.common.util.concurrent.ListenableFuture<com.grpc.UserList> getAllUsers(
-        com.grpc.Room request) {
-      return futureUnaryCall(
-          getChannel().newCall(METHOD_GET_ALL_USERS, getCallOptions()), request);
     }
 
     /**
