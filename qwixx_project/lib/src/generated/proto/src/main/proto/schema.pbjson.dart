@@ -37,17 +37,18 @@ final $typed_data.Uint8List diceDescriptor = $convert.base64Decode('CgREaWNlEhYK
 const Room$json = const {
   '1': 'Room',
   '2': const [
-    const {'1': 'roomId', '3': 1, '4': 1, '5': 5, '10': 'roomId'},
+    const {'1': 'roomId', '3': 1, '4': 1, '5': 9, '10': 'roomId'},
+    const {'1': 'sixSide', '3': 2, '4': 1, '5': 8, '10': 'sixSide'},
   ],
 };
 
 /// Descriptor for `Room`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List roomDescriptor = $convert.base64Decode('CgRSb29tEhYKBnJvb21JZBgBIAEoBVIGcm9vbUlk');
+final $typed_data.Uint8List roomDescriptor = $convert.base64Decode('CgRSb29tEhYKBnJvb21JZBgBIAEoCVIGcm9vbUlkEhgKB3NpeFNpZGUYAiABKAhSB3NpeFNpZGU=');
 @$core.Deprecated('Use userDescriptor instead')
 const User$json = const {
   '1': 'User',
   '2': const [
-    const {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'room', '3': 2, '4': 1, '5': 11, '6': '.com.grpc.Room', '10': 'room'},
     const {'1': 'dices', '3': 3, '4': 3, '5': 11, '6': '.com.grpc.Dice', '10': 'dices'},
     const {'1': 'queue', '3': 4, '4': 1, '5': 5, '10': 'queue'},
@@ -55,7 +56,7 @@ const User$json = const {
 };
 
 /// Descriptor for `User`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List userDescriptor = $convert.base64Decode('CgRVc2VyEg4KAmlkGAEgASgFUgJpZBIiCgRyb29tGAIgASgLMg4uY29tLmdycGMuUm9vbVIEcm9vbRIkCgVkaWNlcxgDIAMoCzIOLmNvbS5ncnBjLkRpY2VSBWRpY2VzEhQKBXF1ZXVlGAQgASgFUgVxdWV1ZQ==');
+final $typed_data.Uint8List userDescriptor = $convert.base64Decode('CgRVc2VyEg4KAmlkGAEgASgJUgJpZBIiCgRyb29tGAIgASgLMg4uY29tLmdycGMuUm9vbVIEcm9vbRIkCgVkaWNlcxgDIAMoCzIOLmNvbS5ncnBjLkRpY2VSBWRpY2VzEhQKBXF1ZXVlGAQgASgFUgVxdWV1ZQ==');
 @$core.Deprecated('Use emptyDescriptor instead')
 const Empty$json = const {
   '1': 'Empty',

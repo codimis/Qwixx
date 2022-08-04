@@ -1,32 +1,52 @@
-import '../client_server/ClientServer.dart';
+import 'package:grpc/grpc.dart' show CallOptions, ChannelCredentials, ChannelOptions, ClientChannel;
+
 import '../src/generated/proto/src/main/proto/schema.pbgrpc.dart';
 
-class ClientController {
-  late final QwixxServiceClient  _clientServerConnection=ClientServerConnection().createClient();
+class ClientController{
 
-  Stream<UserList> getAllUsers(Room room) async* {
-      Stream<UserList> stream= _clientServerConnection.getAllUsers(room).asBroadcastStream();
-      yield* stream;
+late final ClientChannel  _clientServerConnection;
+late final QwixxServiceClient stub;
+  
+  ClientController(){
+    _clientServerConnection=createClient();
+    stub=QwixxServiceClient(_clientServerConnection);
+    
+  }
+  void shutDownChannel(){
+    _clientServerConnection.shutdown();
+  }
+   ClientChannel createClient() {
+  return 
+    ClientChannel("10.0.2.2", port:9000,
+    options:const ChannelOptions(credentials: ChannelCredentials.insecure()));
   }
 
- Future<Response> join(User user) async {
-    Response response = await _clientServerConnection.join(user);
+
+ 
+  Stream<UserList> getAllUsers(Room room) async* {
+    await for (var msg in stub.getAllUsers(room)) {
+      yield msg;
+    }
+      
+  }
+
+ Future<User> join(User user) async {
+    User response = await stub.join(user);
         print(response);
 
     return response;
   }
-  Future<Response> create(User user)async{
-    Response response = await _clientServerConnection.create(user);
+  Future<User> create(User user)async{
+    User response = await stub.create(user);
       print(response);
     return response;
   }
   Future<void> setTime(Time time)async{
-     await _clientServerConnection.setTime(time);
+     await stub.setTime(time);
      
   }
    Stream<Time> startTimer(Room room) async* {
-   Stream<Time> stream=_clientServerConnection.startTimer(room).asBroadcastStream();
+   Stream<Time> stream=stub.startTimer(room).asBroadcastStream();
    yield* stream;
-
   }
 }

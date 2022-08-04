@@ -1,9 +1,13 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
+import 'package:qwixx_project/model/default_user_model.dart';
 import 'package:qwixx_project/view/waiting_user_view.dart';
 
 import '../controller/client_server_controller.dart';
 import '../src/generated/proto/src/main/proto/schema.pbgrpc.dart';
+import 'game_choose_dart.dart';
 
 
 
@@ -38,7 +42,7 @@ class _CreateGameViewState extends State<CreateGameView> {
         title:  Text(headline),
         centerTitle: true,
       ),
-      body: Column(
+      body: ListView(
         children: [
             Padding(padding: const EdgeInsets.symmetric(vertical: 30),
             child: Text(subheadline,
@@ -76,13 +80,9 @@ class CreateButton extends StatelessWidget {
   Widget build(BuildContext context) {
       return ElevatedButton(
         onPressed: () async {
-           await client.create(User(
-            id: 10,
-            queue: 1,
-            room: Room(roomId: 10),
-            dices: [Dice(number: 1), Dice(number: 2), Dice(number: 3), Dice(number: 4), Dice(number: 5)]),
-            );
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>const WaitingUser()));
+
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>  const GameChoose(online:true)));
+           
         },
         child: const Text("Create"),
       );
@@ -100,13 +100,16 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
       return ElevatedButton(
         onPressed: ()async{
-           await client.join(User(
-            id: 25,
-            queue: 1,
-            room: Room(roomId: 10),
-            dices: [Dice(number: 1), Dice(number: 2), Dice(number: 3), Dice(number: 4), Dice(number: 5)]),
+          if(textController.text!=""){
+            Future<User> response= client.join(
+              DefaultUserModel().userModel(textController.text,null)
             );
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>const WaitingUser()));
+            response.then((value) => 
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> WaitingUser(side: value.room.sixSide,user: value)))
+            );
+          }
+          
+          
         },
         child: const Text("Join"),
       );
@@ -128,10 +131,11 @@ class TextWidget extends StatelessWidget {
         width: MediaQuery.of(context).size.width/2,
         child:  TextField(
           controller: textController,
-          onChanged: (value) => {
-            textController.text=value
-          },
+          textAlign: TextAlign.start,
+          inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
+        
           decoration: InputDecoration(
+
             labelText: "Game Id",
             border: const OutlineInputBorder().copyWith(
               borderRadius: BorderRadius.circular(10),

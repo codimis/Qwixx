@@ -59,6 +59,8 @@ dev_dependencies:
   grpc: ^3.0.2
   #protobuf
   protobuf: ^2.1.0
+  #uuid
+  uuid: ^3.0.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

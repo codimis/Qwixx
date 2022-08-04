@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:qwixx_project/controller/client_server_controller.dart';
+import 'package:qwixx_project/src/generated/proto/src/main/proto/schema.pbgrpc.dart';
+import 'package:qwixx_project/view/waiting_user_view.dart';
+import 'package:uuid/uuid.dart';
 
+import '../model/default_user_model.dart';
 import 'game_view.dart';
 
 class GameChoose extends StatefulWidget {
-  const GameChoose({Key? key}) : super(key: key);
-
+   const GameChoose({Key? key, required this.online}) : super(key: key);
+  final bool online;
   @override
   State<GameChoose> createState() => _GameChooseState();
 }
 
 class _GameChooseState extends State<GameChoose> {
+  late final ClientController controller;
+  var uuid=const Uuid();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller=ClientController();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,11 +33,24 @@ class _GameChooseState extends State<GameChoose> {
           Flexible(
             flex: 1,
             child: InkWell(
-              onTap: (){
-                Navigator.push(
+              onTap: ()async {
+                if(widget.online){
+                  var newUUID=uuid.v1().substring(0,7);
+                 User user=await controller.create(
+                      DefaultUserModel().userModel(newUUID,false)
+                  );
+                  Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const GameView(side:true)),
-                );
+                  MaterialPageRoute(builder: (context) =>  WaitingUser(side: false,user: user)),
+                  );
+                
+
+                }else{
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) =>  const GameView(side:false)),
+                  );
+                }
               },
               child: Card(
                 child: Column(children: [
@@ -41,11 +67,25 @@ class _GameChooseState extends State<GameChoose> {
          Flexible(
           flex:1,
            child: InkWell(
-              onTap: (){
-                Navigator.push(
+              onTap: () async {
+                if(widget.online){
+                  var newUUID=uuid.v1().substring(0,7);
+                 User user=await controller.create(
+                      DefaultUserModel().userModel(int.parse(newUUID),false)
+                  );
+                  Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  const GameView(side: false)),
-                );
+                  MaterialPageRoute(builder: (context) =>  WaitingUser(side: false,user: user)),
+                  );
+                
+
+                }else{
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) =>  const GameView(side:false)),
+                  );
+                }
+           
               },
               child: Card(
                 child: Column(children: [

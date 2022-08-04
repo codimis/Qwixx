@@ -2,6 +2,7 @@ package com.grpc.service;
 
 
 import com.grpc.*;
+import com.grpc.Dice;
 import com.grpc.Empty;
 import com.grpc.QwixxServiceGrpc;
 import com.grpc.Response;
@@ -21,14 +22,26 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
      static Map<Room,ArrayList<User>> user=new HashMap<>();
      static Map<Room,Integer> queue=new HashMap<>();
      static Map<Room,Time> timer=new HashMap<>();
+     static List<StreamObserver<UserList>> observers=new ArrayList<>();
 
     @Override
     public void getAllUsers(Room request, StreamObserver<UserList> responseObserver) {
-        List<User> userListed= user.get(request);
-        responseObserver.onNext(UserList.newBuilder().addAllUsers(userListed).build());
-        responseObserver.onCompleted();
-    }
 
+        observers.add(responseObserver);
+        UserList list=UserList.newBuilder().addAllUsers(user.get(request)).build();
+
+        for(StreamObserver<UserList> observer:observers){
+            observer.onNext(list);
+        }
+        try {
+            Thread.sleep(100000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        responseObserver.onCompleted();
+        observers.remove(responseObserver);
+    }
     @Override
     public void currentUser(Room request, StreamObserver<User> responseObserver) {
         int userQueue=queue.get(request);
@@ -45,15 +58,15 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     }
 
     @Override
-    public void join(User request, StreamObserver<Response> responseObserver) {
+    public void join(User request, StreamObserver<User> responseObserver) {
         Room room=Room.newBuilder().setRoomId(request.getRoom().getRoomId()).build();
+        if(user.keySet().stream().anyMatch(room1 -> request.getRoom().getRoomId().equals(room1.getRoomId()))){
 
-        if(user.containsKey(room)){
-
-            user.get(room).add(request);
-            responseObserver.onNext(Response.newBuilder().setMsg("Success").setError(0).build());
+            user.get(room).add(request.toBuilder().setQueue(user.get(room).size()).build());
+            responseObserver.onNext(request);
         }else{
-            responseObserver.onNext(Response.newBuilder().setMsg("Room does not exist").setError(1).build());
+
+            responseObserver.onError(new Throwable());
         }
         responseObserver.onCompleted();
     }
@@ -67,7 +80,6 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
 
     @Override
     public void startTimer(Room request, StreamObserver<Time> responseObserver) {
-
         LocalDateTime deadline= LocalDateTime.now().plusSeconds(timer.get(request).getTime());
         int timeCount=timer.get(request).getTime();
         Room room=request;
@@ -76,6 +88,7 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
             try {
                 Thread.sleep(1000);
                 timeCount--;
+                timer.replace(request,Time.newBuilder().setTime(timeCount).setRoom(request).build());
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -84,15 +97,16 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     }
 
     @Override
-    public void create(User request, StreamObserver<Response> responseObserver) {
-        Room room=Room.newBuilder().setRoomId(request.getRoom().getRoomId()).build();
+    public void create(User request, StreamObserver<User> responseObserver) {
+        Room room=Room.newBuilder().setRoomId(request.getRoom().getRoomId()).setSixSide(request.getRoom().getSixSide()).build();
         if(user.containsKey(room)){
-            responseObserver.onNext(Response.newBuilder().setMsg("Room already Exist").setError(1).build());
+            responseObserver.onError(new Throwable("Room already exist"));
 
         }else{
+
             user.put(room,new ArrayList<>());
             user.get(room).add(request);
-            responseObserver.onNext(Response.newBuilder().setMsg("Created Success").setError(0).build());
+            responseObserver.onNext(request);
             queue.put(request.getRoom(),0);
         }
         responseObserver.onCompleted();

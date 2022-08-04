@@ -29,27 +29,27 @@ public final class QwixxServiceGrpc {
   // Static method descriptors that strictly reflect the proto.
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static final io.grpc.MethodDescriptor<com.grpc.User,
-      com.grpc.Response> METHOD_JOIN =
-      io.grpc.MethodDescriptor.<com.grpc.User, com.grpc.Response>newBuilder()
+      com.grpc.User> METHOD_JOIN =
+      io.grpc.MethodDescriptor.<com.grpc.User, com.grpc.User>newBuilder()
           .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
           .setFullMethodName(generateFullMethodName(
               "com.grpc.QwixxService", "join"))
           .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
               com.grpc.User.getDefaultInstance()))
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              com.grpc.Response.getDefaultInstance()))
+              com.grpc.User.getDefaultInstance()))
           .build();
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static final io.grpc.MethodDescriptor<com.grpc.User,
-      com.grpc.Response> METHOD_CREATE =
-      io.grpc.MethodDescriptor.<com.grpc.User, com.grpc.Response>newBuilder()
+      com.grpc.User> METHOD_CREATE =
+      io.grpc.MethodDescriptor.<com.grpc.User, com.grpc.User>newBuilder()
           .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
           .setFullMethodName(generateFullMethodName(
               "com.grpc.QwixxService", "create"))
           .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
               com.grpc.User.getDefaultInstance()))
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              com.grpc.Response.getDefaultInstance()))
+              com.grpc.User.getDefaultInstance()))
           .build();
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static final io.grpc.MethodDescriptor<com.grpc.Room,
@@ -166,14 +166,14 @@ public final class QwixxServiceGrpc {
     /**
      */
     public void join(com.grpc.User request,
-        io.grpc.stub.StreamObserver<com.grpc.Response> responseObserver) {
+        io.grpc.stub.StreamObserver<com.grpc.User> responseObserver) {
       asyncUnimplementedUnaryCall(METHOD_JOIN, responseObserver);
     }
 
     /**
      */
     public void create(com.grpc.User request,
-        io.grpc.stub.StreamObserver<com.grpc.Response> responseObserver) {
+        io.grpc.stub.StreamObserver<com.grpc.User> responseObserver) {
       asyncUnimplementedUnaryCall(METHOD_CREATE, responseObserver);
     }
 
@@ -233,14 +233,14 @@ public final class QwixxServiceGrpc {
             asyncUnaryCall(
               new MethodHandlers<
                 com.grpc.User,
-                com.grpc.Response>(
+                com.grpc.User>(
                   this, METHODID_JOIN)))
           .addMethod(
             METHOD_CREATE,
             asyncUnaryCall(
               new MethodHandlers<
                 com.grpc.User,
-                com.grpc.Response>(
+                com.grpc.User>(
                   this, METHODID_CREATE)))
           .addMethod(
             METHOD_GET_ALL_USERS,
@@ -316,7 +316,7 @@ public final class QwixxServiceGrpc {
     /**
      */
     public void join(com.grpc.User request,
-        io.grpc.stub.StreamObserver<com.grpc.Response> responseObserver) {
+        io.grpc.stub.StreamObserver<com.grpc.User> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(METHOD_JOIN, getCallOptions()), request, responseObserver);
     }
@@ -324,7 +324,7 @@ public final class QwixxServiceGrpc {
     /**
      */
     public void create(com.grpc.User request,
-        io.grpc.stub.StreamObserver<com.grpc.Response> responseObserver) {
+        io.grpc.stub.StreamObserver<com.grpc.User> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(METHOD_CREATE, getCallOptions()), request, responseObserver);
     }
@@ -406,14 +406,14 @@ public final class QwixxServiceGrpc {
 
     /**
      */
-    public com.grpc.Response join(com.grpc.User request) {
+    public com.grpc.User join(com.grpc.User request) {
       return blockingUnaryCall(
           getChannel(), METHOD_JOIN, getCallOptions(), request);
     }
 
     /**
      */
-    public com.grpc.Response create(com.grpc.User request) {
+    public com.grpc.User create(com.grpc.User request) {
       return blockingUnaryCall(
           getChannel(), METHOD_CREATE, getCallOptions(), request);
     }
@@ -491,7 +491,7 @@ public final class QwixxServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.grpc.Response> join(
+    public com.google.common.util.concurrent.ListenableFuture<com.grpc.User> join(
         com.grpc.User request) {
       return futureUnaryCall(
           getChannel().newCall(METHOD_JOIN, getCallOptions()), request);
@@ -499,7 +499,7 @@ public final class QwixxServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.grpc.Response> create(
+    public com.google.common.util.concurrent.ListenableFuture<com.grpc.User> create(
         com.grpc.User request) {
       return futureUnaryCall(
           getChannel().newCall(METHOD_CREATE, getCallOptions()), request);
@@ -567,11 +567,11 @@ public final class QwixxServiceGrpc {
       switch (methodId) {
         case METHODID_JOIN:
           serviceImpl.join((com.grpc.User) request,
-              (io.grpc.stub.StreamObserver<com.grpc.Response>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.grpc.User>) responseObserver);
           break;
         case METHODID_CREATE:
           serviceImpl.create((com.grpc.User) request,
-              (io.grpc.stub.StreamObserver<com.grpc.Response>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.grpc.User>) responseObserver);
           break;
         case METHODID_GET_ALL_USERS:
           serviceImpl.getAllUsers((com.grpc.Room) request,

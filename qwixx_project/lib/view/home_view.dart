@@ -167,7 +167,7 @@ class StartGameButtonWidget extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const GameChoose(),
+              builder: (context) => GameChoose(online:false),
             ),
           );
         },

@@ -1,11 +1,16 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:qwixx_project/controller/client_server_controller.dart';
 
 import '../src/generated/proto/src/main/proto/schema.pbgrpc.dart';
 
 class WaitingUser extends StatefulWidget {
-  const WaitingUser({Key? key}) : super(key: key);
+  final bool side;
+  final User user;
+  const WaitingUser({Key? key,required this.side, required this.user}) : super(key: key);
 
   @override
   State<WaitingUser> createState() => _WaitingUserState();
@@ -15,46 +20,69 @@ class _WaitingUserState extends State<WaitingUser> {
   late final ClientController clientController;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     connectClient();
   }
   Future<void> connectClient() async {
     
         clientController=ClientController();
-       await clientController.join(
-            User(
-            id: 20,
-            queue: 1,
-            room: Room(roomId: 10),
-            dices: [Dice(number: 1), Dice(number: 2), Dice(number: 3), Dice(number: 4), Dice(number: 5)])
-            );
+
+   
   } 
+  void wait(){
+    
+  }
+@override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    clientController.shutDownChannel();
+    print("shutit");
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Waiting for User"),
         centerTitle: true,
+        leading:  IconButton(onPressed: (){
+        },icon: const Icon(Icons.abc_outlined)),
       ),
       body:  Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            StreamBuilder<UserList>(stream: clientController.getAllUsers(Room(roomId: 10)),
+            StreamBuilder<UserList>(stream: clientController.getAllUsers(Room(roomId: widget.user.room.roomId,sixSide: widget.side)),
             builder: (context, snapshot) {
               if(snapshot.connectionState==ConnectionState.waiting){
                 return const CircularProgressIndicator();
               }
               else{
                 if(snapshot.hasData){
-                  return Text("${snapshot.data!.users.length}");
+                  return Column(
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height*0.2,child: Lottie.asset("assets/animation/pigeon.json")),
+                      Text("Waiting for User\n",style: Theme.of(context).textTheme.headline3,textAlign: TextAlign.center,),
+                      Text("${widget.user.room.roomId}\n\n Other users can join with this id\n\n${snapshot.data!.users.length} User Here",
+                    style: Theme.of(context).textTheme.headline6,textAlign: TextAlign.center,),
+                    ]
+
+                  );
+                  
                 }
                 else{
                   return const Text("0");
                 }
+                
                               }
             },
             ),
+            Padding(
+              padding:const EdgeInsets.only(top: 50),
+              child: ElevatedButton(onPressed: (){
+            
+              }, child: const Text("Start the game")),
+            )
               
               ],
             )

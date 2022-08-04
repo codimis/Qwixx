@@ -76,17 +76,22 @@ class Dice extends $pb.GeneratedMessage {
 
 class Room extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Room', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'com.grpc'), createEmptyInstance: create)
-    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'roomId', $pb.PbFieldType.O3, protoName: 'roomId')
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'roomId', protoName: 'roomId')
+    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sixSide', protoName: 'sixSide')
     ..hasRequiredFields = false
   ;
 
   Room._() : super();
   factory Room({
-    $core.int? roomId,
+    $core.String? roomId,
+    $core.bool? sixSide,
   }) {
     final _result = create();
     if (roomId != null) {
       _result.roomId = roomId;
+    }
+    if (sixSide != null) {
+      _result.sixSide = sixSide;
     }
     return _result;
   }
@@ -112,18 +117,27 @@ class Room extends $pb.GeneratedMessage {
   static Room? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get roomId => $_getIZ(0);
+  $core.String get roomId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set roomId($core.int v) { $_setSignedInt32(0, v); }
+  set roomId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasRoomId() => $_has(0);
   @$pb.TagNumber(1)
   void clearRoomId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get sixSide => $_getBF(1);
+  @$pb.TagNumber(2)
+  set sixSide($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSixSide() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSixSide() => clearField(2);
 }
 
 class User extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'User', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'com.grpc'), createEmptyInstance: create)
-    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', $pb.PbFieldType.O3)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOM<Room>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'room', subBuilder: Room.create)
     ..pc<Dice>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dices', $pb.PbFieldType.PM, subBuilder: Dice.create)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'queue', $pb.PbFieldType.O3)
@@ -132,7 +146,7 @@ class User extends $pb.GeneratedMessage {
 
   User._() : super();
   factory User({
-    $core.int? id,
+    $core.String? id,
     Room? room,
     $core.Iterable<Dice>? dices,
     $core.int? queue,
@@ -174,9 +188,9 @@ class User extends $pb.GeneratedMessage {
   static User? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get id => $_getIZ(0);
+  $core.String get id => $_getSZ(0);
   @$pb.TagNumber(1)
-  set id($core.int v) { $_setSignedInt32(0, v); }
+  set id($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)

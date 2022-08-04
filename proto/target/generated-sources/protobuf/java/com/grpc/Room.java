@@ -15,7 +15,8 @@ public  final class Room extends
     super(builder);
   }
   private Room() {
-    roomId_ = 0;
+    roomId_ = "";
+    sixSide_ = false;
   }
 
   @java.lang.Override
@@ -43,9 +44,15 @@ public  final class Room extends
             }
             break;
           }
-          case 8: {
+          case 10: {
+            java.lang.String s = input.readStringRequireUtf8();
 
-            roomId_ = input.readInt32();
+            roomId_ = s;
+            break;
+          }
+          case 16: {
+
+            sixSide_ = input.readBool();
             break;
           }
         }
@@ -72,12 +79,46 @@ public  final class Room extends
   }
 
   public static final int ROOMID_FIELD_NUMBER = 1;
-  private int roomId_;
+  private volatile java.lang.Object roomId_;
   /**
-   * <code>int32 roomId = 1;</code>
+   * <code>string roomId = 1;</code>
    */
-  public int getRoomId() {
-    return roomId_;
+  public java.lang.String getRoomId() {
+    java.lang.Object ref = roomId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      roomId_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string roomId = 1;</code>
+   */
+  public com.google.protobuf.ByteString
+      getRoomIdBytes() {
+    java.lang.Object ref = roomId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      roomId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int SIXSIDE_FIELD_NUMBER = 2;
+  private boolean sixSide_;
+  /**
+   * <code>bool sixSide = 2;</code>
+   */
+  public boolean getSixSide() {
+    return sixSide_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -92,8 +133,11 @@ public  final class Room extends
 
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (roomId_ != 0) {
-      output.writeInt32(1, roomId_);
+    if (!getRoomIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, roomId_);
+    }
+    if (sixSide_ != false) {
+      output.writeBool(2, sixSide_);
     }
   }
 
@@ -102,9 +146,12 @@ public  final class Room extends
     if (size != -1) return size;
 
     size = 0;
-    if (roomId_ != 0) {
+    if (!getRoomIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, roomId_);
+    }
+    if (sixSide_ != false) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, roomId_);
+        .computeBoolSize(2, sixSide_);
     }
     memoizedSize = size;
     return size;
@@ -122,8 +169,10 @@ public  final class Room extends
     com.grpc.Room other = (com.grpc.Room) obj;
 
     boolean result = true;
-    result = result && (getRoomId()
-        == other.getRoomId());
+    result = result && getRoomId()
+        .equals(other.getRoomId());
+    result = result && (getSixSide()
+        == other.getSixSide());
     return result;
   }
 
@@ -135,7 +184,10 @@ public  final class Room extends
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + ROOMID_FIELD_NUMBER;
-    hash = (53 * hash) + getRoomId();
+    hash = (53 * hash) + getRoomId().hashCode();
+    hash = (37 * hash) + SIXSIDE_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getSixSide());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -265,7 +317,9 @@ public  final class Room extends
     }
     public Builder clear() {
       super.clear();
-      roomId_ = 0;
+      roomId_ = "";
+
+      sixSide_ = false;
 
       return this;
     }
@@ -290,6 +344,7 @@ public  final class Room extends
     public com.grpc.Room buildPartial() {
       com.grpc.Room result = new com.grpc.Room(this);
       result.roomId_ = roomId_;
+      result.sixSide_ = sixSide_;
       onBuilt();
       return result;
     }
@@ -331,8 +386,12 @@ public  final class Room extends
 
     public Builder mergeFrom(com.grpc.Room other) {
       if (other == com.grpc.Room.getDefaultInstance()) return this;
-      if (other.getRoomId() != 0) {
-        setRoomId(other.getRoomId());
+      if (!other.getRoomId().isEmpty()) {
+        roomId_ = other.roomId_;
+        onChanged();
+      }
+      if (other.getSixSide() != false) {
+        setSixSide(other.getSixSide());
       }
       onChanged();
       return this;
@@ -360,28 +419,97 @@ public  final class Room extends
       return this;
     }
 
-    private int roomId_ ;
+    private java.lang.Object roomId_ = "";
     /**
-     * <code>int32 roomId = 1;</code>
+     * <code>string roomId = 1;</code>
      */
-    public int getRoomId() {
-      return roomId_;
+    public java.lang.String getRoomId() {
+      java.lang.Object ref = roomId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        roomId_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
     }
     /**
-     * <code>int32 roomId = 1;</code>
+     * <code>string roomId = 1;</code>
      */
-    public Builder setRoomId(int value) {
-      
+    public com.google.protobuf.ByteString
+        getRoomIdBytes() {
+      java.lang.Object ref = roomId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        roomId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string roomId = 1;</code>
+     */
+    public Builder setRoomId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
       roomId_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 roomId = 1;</code>
+     * <code>string roomId = 1;</code>
      */
     public Builder clearRoomId() {
       
-      roomId_ = 0;
+      roomId_ = getDefaultInstance().getRoomId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string roomId = 1;</code>
+     */
+    public Builder setRoomIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      roomId_ = value;
+      onChanged();
+      return this;
+    }
+
+    private boolean sixSide_ ;
+    /**
+     * <code>bool sixSide = 2;</code>
+     */
+    public boolean getSixSide() {
+      return sixSide_;
+    }
+    /**
+     * <code>bool sixSide = 2;</code>
+     */
+    public Builder setSixSide(boolean value) {
+      
+      sixSide_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>bool sixSide = 2;</code>
+     */
+    public Builder clearSixSide() {
+      
+      sixSide_ = false;
       onChanged();
       return this;
     }

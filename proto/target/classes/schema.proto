@@ -19,11 +19,12 @@ message Dice{
 
 }
 message Room{
-  int32 roomId=1;
+  string roomId=1;
+  bool sixSide=2;
 }
 
 message User{
-  int32 id=1;
+  string id=1;
   Room room=2;
   repeated Dice dices=3;
   int32 queue=4;
@@ -47,8 +48,8 @@ message Time{
 }
 
 service QwixxService {
-  rpc join(User) returns (Response) {}
-  rpc create(User) returns(Response){}
+  rpc join(User) returns (User) {}
+  rpc create(User) returns(User){}
   rpc getAllUsers(Room) returns (stream UserList) {}
   rpc nextUser(User) returns (User){}
   rpc currentUser(Room) returns (User){}

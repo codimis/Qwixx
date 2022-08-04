@@ -15,7 +15,7 @@ public  final class User extends
     super(builder);
   }
   private User() {
-    id_ = 0;
+    id_ = "";
     dices_ = java.util.Collections.emptyList();
     queue_ = 0;
   }
@@ -45,9 +45,10 @@ public  final class User extends
             }
             break;
           }
-          case 8: {
+          case 10: {
+            java.lang.String s = input.readStringRequireUtf8();
 
-            id_ = input.readInt32();
+            id_ = s;
             break;
           }
           case 18: {
@@ -105,12 +106,37 @@ public  final class User extends
 
   private int bitField0_;
   public static final int ID_FIELD_NUMBER = 1;
-  private int id_;
+  private volatile java.lang.Object id_;
   /**
-   * <code>int32 id = 1;</code>
+   * <code>string id = 1;</code>
    */
-  public int getId() {
-    return id_;
+  public java.lang.String getId() {
+    java.lang.Object ref = id_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      id_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string id = 1;</code>
+   */
+  public com.google.protobuf.ByteString
+      getIdBytes() {
+    java.lang.Object ref = id_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      id_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   public static final int ROOM_FIELD_NUMBER = 2;
@@ -190,8 +216,8 @@ public  final class User extends
 
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (id_ != 0) {
-      output.writeInt32(1, id_);
+    if (!getIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
     }
     if (room_ != null) {
       output.writeMessage(2, getRoom());
@@ -209,9 +235,8 @@ public  final class User extends
     if (size != -1) return size;
 
     size = 0;
-    if (id_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, id_);
+    if (!getIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
     }
     if (room_ != null) {
       size += com.google.protobuf.CodedOutputStream
@@ -241,8 +266,8 @@ public  final class User extends
     com.grpc.User other = (com.grpc.User) obj;
 
     boolean result = true;
-    result = result && (getId()
-        == other.getId());
+    result = result && getId()
+        .equals(other.getId());
     result = result && (hasRoom() == other.hasRoom());
     if (hasRoom()) {
       result = result && getRoom()
@@ -263,7 +288,7 @@ public  final class User extends
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + ID_FIELD_NUMBER;
-    hash = (53 * hash) + getId();
+    hash = (53 * hash) + getId().hashCode();
     if (hasRoom()) {
       hash = (37 * hash) + ROOM_FIELD_NUMBER;
       hash = (53 * hash) + getRoom().hashCode();
@@ -404,7 +429,7 @@ public  final class User extends
     }
     public Builder clear() {
       super.clear();
-      id_ = 0;
+      id_ = "";
 
       if (roomBuilder_ == null) {
         room_ = null;
@@ -502,8 +527,9 @@ public  final class User extends
 
     public Builder mergeFrom(com.grpc.User other) {
       if (other == com.grpc.User.getDefaultInstance()) return this;
-      if (other.getId() != 0) {
-        setId(other.getId());
+      if (!other.getId().isEmpty()) {
+        id_ = other.id_;
+        onChanged();
       }
       if (other.hasRoom()) {
         mergeRoom(other.getRoom());
@@ -564,28 +590,71 @@ public  final class User extends
     }
     private int bitField0_;
 
-    private int id_ ;
+    private java.lang.Object id_ = "";
     /**
-     * <code>int32 id = 1;</code>
+     * <code>string id = 1;</code>
      */
-    public int getId() {
-      return id_;
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        id_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
     }
     /**
-     * <code>int32 id = 1;</code>
+     * <code>string id = 1;</code>
      */
-    public Builder setId(int value) {
-      
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string id = 1;</code>
+     */
+    public Builder setId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
       id_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 id = 1;</code>
+     * <code>string id = 1;</code>
      */
     public Builder clearId() {
       
-      id_ = 0;
+      id_ = getDefaultInstance().getId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string id = 1;</code>
+     */
+    public Builder setIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      id_ = value;
       onChanged();
       return this;
     }

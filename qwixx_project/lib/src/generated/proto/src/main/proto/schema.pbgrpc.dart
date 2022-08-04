@@ -14,14 +14,14 @@ import 'schema.pb.dart' as $0;
 export 'schema.pb.dart';
 
 class QwixxServiceClient extends $grpc.Client {
-  static final _$join = $grpc.ClientMethod<$0.User, $0.Response>(
+  static final _$join = $grpc.ClientMethod<$0.User, $0.User>(
       '/com.grpc.QwixxService/join',
       ($0.User value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.Response.fromBuffer(value));
-  static final _$create = $grpc.ClientMethod<$0.User, $0.Response>(
+      ($core.List<$core.int> value) => $0.User.fromBuffer(value));
+  static final _$create = $grpc.ClientMethod<$0.User, $0.User>(
       '/com.grpc.QwixxService/create',
       ($0.User value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.Response.fromBuffer(value));
+      ($core.List<$core.int> value) => $0.User.fromBuffer(value));
   static final _$getAllUsers = $grpc.ClientMethod<$0.Room, $0.UserList>(
       '/com.grpc.QwixxService/getAllUsers',
       ($0.Room value) => value.writeToBuffer(),
@@ -56,12 +56,12 @@ class QwixxServiceClient extends $grpc.Client {
       $core.Iterable<$grpc.ClientInterceptor>? interceptors})
       : super(channel, options: options, interceptors: interceptors);
 
-  $grpc.ResponseFuture<$0.Response> join($0.User request,
+  $grpc.ResponseFuture<$0.User> join($0.User request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$join, request, options: options);
   }
 
-  $grpc.ResponseFuture<$0.Response> create($0.User request,
+  $grpc.ResponseFuture<$0.User> create($0.User request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$create, request, options: options);
   }
@@ -112,20 +112,20 @@ abstract class QwixxServiceBase extends $grpc.Service {
   $core.String get $name => 'com.grpc.QwixxService';
 
   QwixxServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.User, $0.Response>(
+    $addMethod($grpc.ServiceMethod<$0.User, $0.User>(
         'join',
         join_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.User.fromBuffer(value),
-        ($0.Response value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.User, $0.Response>(
+        ($0.User value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.User, $0.User>(
         'create',
         create_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.User.fromBuffer(value),
-        ($0.Response value) => value.writeToBuffer()));
+        ($0.User value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.Room, $0.UserList>(
         'getAllUsers',
         getAllUsers_Pre,
@@ -177,12 +177,12 @@ abstract class QwixxServiceBase extends $grpc.Service {
         ($0.Time value) => value.writeToBuffer()));
   }
 
-  $async.Future<$0.Response> join_Pre(
+  $async.Future<$0.User> join_Pre(
       $grpc.ServiceCall call, $async.Future<$0.User> request) async {
     return join(call, await request);
   }
 
-  $async.Future<$0.Response> create_Pre(
+  $async.Future<$0.User> create_Pre(
       $grpc.ServiceCall call, $async.Future<$0.User> request) async {
     return create(call, await request);
   }
@@ -222,8 +222,8 @@ abstract class QwixxServiceBase extends $grpc.Service {
     yield* startTimer(call, await request);
   }
 
-  $async.Future<$0.Response> join($grpc.ServiceCall call, $0.User request);
-  $async.Future<$0.Response> create($grpc.ServiceCall call, $0.User request);
+  $async.Future<$0.User> join($grpc.ServiceCall call, $0.User request);
+  $async.Future<$0.User> create($grpc.ServiceCall call, $0.User request);
   $async.Stream<$0.UserList> getAllUsers(
       $grpc.ServiceCall call, $0.Room request);
   $async.Future<$0.User> nextUser($grpc.ServiceCall call, $0.User request);
