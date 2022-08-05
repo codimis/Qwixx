@@ -26,6 +26,12 @@ class _WaitingUserState extends State<WaitingUser> {
     super.initState();
         connectClient();
         storeUserId();
+       // startGameListen();
+  }
+
+  Future<void> startGame() async {
+    print("started");
+    clientController.startGame(widget.user.room);
   }
   Future<void> storeUserId() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -35,9 +41,7 @@ class _WaitingUserState extends State<WaitingUser> {
     
       clientController=ClientController();
   } 
-  void wait(){
-    
-  }
+
 @override
   void dispose() {
     // TODO: implement dispose
@@ -58,37 +62,52 @@ class _WaitingUserState extends State<WaitingUser> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            StreamBuilder<UserList>(stream: clientController.getAllUsers(Room(roomId: widget.user.room.roomId,sixSide: widget.side)),
-            builder: (context, snapshot) {
-              if(snapshot.connectionState==ConnectionState.waiting){
-                return const CircularProgressIndicator();
-              }
-              else{
-                if(snapshot.hasData){
-                  return Column(
-                    children: [
-                      SizedBox(height: MediaQuery.of(context).size.height*0.2,child: Lottie.asset("assets/animation/pigeon.json")),
-                      Text("Waiting for User\n",style: Theme.of(context).textTheme.headline3,textAlign: TextAlign.center,),
-                      Text("${widget.user.room.roomId}\n\n Other users can join with this id\n\n${snapshot.data!.users.length} User Here",
-                    style: Theme.of(context).textTheme.headline6,textAlign: TextAlign.center,),
-                    ]
-
-                  );
+            StreamBuilder<Room>(stream: clientController.getStartedGame(widget.user.room),builder: (context, snapshot) { 
+              print("not started");
+              if(snapshot.hasData){
+                print("here");
+                if(snapshot.data!.roomId.contains(widget.user.room.roomId)){
                   
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>OnlineGameView(side: widget.side,user: widget.user)));
+
+                }
+              }
+              return StreamBuilder<UserList>(stream: clientController.getAllUsers(Room(roomId: widget.user.room.roomId,sixSide: widget.side)),
+              builder: (context, snapshot) {
+                if(snapshot.connectionState==ConnectionState.waiting){
+                  return const CircularProgressIndicator();
                 }
                 else{
-                  return const Text("0");
-                }
-                
-                              }
-            },
+                  if(snapshot.hasData){
+                    return Column(
+                      children: [
+                        SizedBox(height: MediaQuery.of(context).size.height*0.2,child: Lottie.asset("assets/animation/pigeon.json")),
+                        Text("Waiting for User\n",style: Theme.of(context).textTheme.headline3,textAlign: TextAlign.center,),
+                        Text("${widget.user.room.roomId}\n\n Other users can join with this id\n\n${snapshot.data!.users.length} User Here",
+                      style: Theme.of(context).textTheme.headline6,textAlign: TextAlign.center,),
+                      ]
+            
+                    );
+                    
+                  }
+                  else{
+                    return const Text("0");
+                  }
+                  
+                                }
+              },
+              );
+            }
             ),
             Padding(
               padding:const EdgeInsets.only(top: 50),
-              child: ElevatedButton(onPressed: (){
-                  print(widget.user);
-                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>OnlineGameView(
+              child: ElevatedButton(onPressed: () async {
+               await startGame().then((value) => 
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>OnlineGameView(
                   side: widget.side,user: widget.user
+               )
+              
+                
                   
                   )));
               }, child: const Text("Start the game")),

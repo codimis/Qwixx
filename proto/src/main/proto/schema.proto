@@ -31,7 +31,10 @@ message User{
 
 }
 
-
+message IsStarted{
+  bool isStarted=1;
+  Room room=2;
+}
 message Empty{}
 
 message UserList{
@@ -57,4 +60,7 @@ service QwixxService {
   rpc receiveRollDice (Room) returns (stream User) {}
   rpc setTime(Time) returns (Empty){}
   rpc startTimer(Room) returns (stream Time){}
+  rpc startGame(Room) returns (Empty){}
+  rpc getStartedGame(Room) returns(stream IsStarted){}
+
 }

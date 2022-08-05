@@ -50,6 +50,14 @@ class QwixxServiceClient extends $grpc.Client {
       '/com.grpc.QwixxService/startTimer',
       ($0.Room value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Time.fromBuffer(value));
+  static final _$startGame = $grpc.ClientMethod<$0.Room, $0.Empty>(
+      '/com.grpc.QwixxService/startGame',
+      ($0.Room value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
+  static final _$getStartedGame = $grpc.ClientMethod<$0.Room, $0.Room>(
+      '/com.grpc.QwixxService/getStartedGame',
+      ($0.Room value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Room.fromBuffer(value));
 
   QwixxServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -106,6 +114,18 @@ class QwixxServiceClient extends $grpc.Client {
       {$grpc.CallOptions? options}) {
     return $createStreamingCall(
         _$startTimer, $async.Stream.fromIterable([request]),
+        options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Empty> startGame($0.Room request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$startGame, request, options: options);
+  }
+
+  $grpc.ResponseStream<$0.Room> getStartedGame($0.Room request,
+      {$grpc.CallOptions? options}) {
+    return $createStreamingCall(
+        _$getStartedGame, $async.Stream.fromIterable([request]),
         options: options);
   }
 }
@@ -177,6 +197,20 @@ abstract class QwixxServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
         ($0.Time value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Room, $0.Empty>(
+        'startGame',
+        startGame_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
+        ($0.Empty value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Room, $0.Room>(
+        'getStartedGame',
+        getStartedGame_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
+        ($0.Room value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.User> join_Pre(
@@ -224,6 +258,16 @@ abstract class QwixxServiceBase extends $grpc.Service {
     yield* startTimer(call, await request);
   }
 
+  $async.Future<$0.Empty> startGame_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Room> request) async {
+    return startGame(call, await request);
+  }
+
+  $async.Stream<$0.Room> getStartedGame_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Room> request) async* {
+    yield* getStartedGame(call, await request);
+  }
+
   $async.Future<$0.User> join($grpc.ServiceCall call, $0.User request);
   $async.Future<$0.User> create($grpc.ServiceCall call, $0.User request);
   $async.Stream<$0.UserList> getAllUsers(
@@ -235,4 +279,7 @@ abstract class QwixxServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.Room request);
   $async.Future<$0.Empty> setTime($grpc.ServiceCall call, $0.Time request);
   $async.Stream<$0.Time> startTimer($grpc.ServiceCall call, $0.Room request);
+  $async.Future<$0.Empty> startGame($grpc.ServiceCall call, $0.Room request);
+  $async.Stream<$0.Room> getStartedGame(
+      $grpc.ServiceCall call, $0.Room request);
 }

@@ -22,9 +22,23 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
      static Map<Room,ArrayList<User>> user=new HashMap<>();
      static Map<Room,Integer> queue=new HashMap<>();
      static Map<Room,Time> timer=new HashMap<>();
-
+    static Map<Room,Boolean> games=new HashMap<>();
      static List<StreamObserver<UserList>> observers=new ArrayList<>();
     static List<StreamObserver<User>> currentUserObserver=new ArrayList<>();
+    static List<StreamObserver<Room>> startGameObserver=new ArrayList<>();
+
+    @Override
+    public void getStartedGame(Room request, StreamObserver<Room> responseObserver) {
+        startGameObserver.add(responseObserver);
+        System.out.println("Hello");
+        if(games.get(request)) {
+            for (StreamObserver<Room> observer : startGameObserver) {
+                observer.onNext(request);
+            }
+        }
+
+    }
+
     @Override
     public void getAllUsers(Room request, StreamObserver<UserList> responseObserver) {
 
@@ -45,6 +59,14 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     }
 
     @Override
+    public void startGame(Room request, StreamObserver<Empty> responseObserver) {
+        games.replace(request,true);
+        responseObserver.onNext(Empty.newBuilder().build());
+        responseObserver.onCompleted();
+
+    }
+
+    @Override
     public void currentUser(Room request, StreamObserver<User> responseObserver) {
 
         currentUserObserver.add(responseObserver);
@@ -58,7 +80,7 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
             throw new RuntimeException(e);
         }
         responseObserver.onCompleted();
-        observers.remove(responseObserver);
+        currentUserObserver.remove(responseObserver);
 
 
     }
@@ -117,7 +139,7 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
             responseObserver.onError(new Throwable("Room already exist"));
 
         }else{
-
+            games.put(room,false);
             user.put(room,new ArrayList<>());
             user.get(room).add(request.toBuilder().setQueue(user.get(room).size()).setId(UUID.randomUUID().toString()).build());
             responseObserver.onNext(user.get(request.getRoom()).get(user.get(room).size()-1));

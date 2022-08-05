@@ -38,11 +38,9 @@ class _OnlineGameViewState extends State<OnlineGameView> {
           children: [
             StreamBuilder<User>(builder: (context, snapshot) {
               if (snapshot.hasData) {
-                print("here is data");
-                 print(snapshot.data!.id);
-                  print(widget.user.id);
+   
                 if ((snapshot.data!.id).contains( widget.user.id)) {
-                print("this is current user");
+
                   return ElevatedButton(onPressed: (){
                     setState(() {
                       

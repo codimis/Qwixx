@@ -60,4 +60,12 @@ late final QwixxServiceClient stub;
     User stream=await stub.nextUser(room);
      return stream;
   }
+  void startGame(Room room)async{
+    await stub.startGame(room);
+  }
+  Stream<Room> getStartedGame(Room room)async*{
+    await for (var room in stub.getStartedGame(room)) {
+      yield room;
+    }
+  }
 }
