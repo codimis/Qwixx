@@ -22,17 +22,12 @@ class _WaitingUserState extends State<WaitingUser> {
   late final ClientController clientController;
   @override
   void initState() {
-    
     super.initState();
         connectClient();
         storeUserId();
-       // startGameListen();
   }
+  
 
-  Future<void> startGame() async {
-    print("started");
-    clientController.startGame(widget.user.room);
-  }
   Future<void> storeUserId() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("userId", widget.user.id);
@@ -41,6 +36,7 @@ class _WaitingUserState extends State<WaitingUser> {
     
       clientController=ClientController();
   } 
+
 
 @override
   void dispose() {
@@ -102,13 +98,9 @@ class _WaitingUserState extends State<WaitingUser> {
             Padding(
               padding:const EdgeInsets.only(top: 50),
               child: ElevatedButton(onPressed: () async {
-               await startGame().then((value) => 
+               clientController.startGame(widget.user.room) ;
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>OnlineGameView(
                   side: widget.side,user: widget.user
-               )
-              
-                
-                  
                   )));
               }, child: const Text("Start the game")),
             )

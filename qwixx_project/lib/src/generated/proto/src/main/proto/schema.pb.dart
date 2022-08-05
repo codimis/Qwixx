@@ -220,6 +220,69 @@ class User extends $pb.GeneratedMessage {
   void clearQueue() => clearField(4);
 }
 
+class IsStarted extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'IsStarted', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'com.grpc'), createEmptyInstance: create)
+    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isStarted', protoName: 'isStarted')
+    ..aOM<Room>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'room', subBuilder: Room.create)
+    ..hasRequiredFields = false
+  ;
+
+  IsStarted._() : super();
+  factory IsStarted({
+    $core.bool? isStarted,
+    Room? room,
+  }) {
+    final _result = create();
+    if (isStarted != null) {
+      _result.isStarted = isStarted;
+    }
+    if (room != null) {
+      _result.room = room;
+    }
+    return _result;
+  }
+  factory IsStarted.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory IsStarted.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  IsStarted clone() => IsStarted()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  IsStarted copyWith(void Function(IsStarted) updates) => super.copyWith((message) => updates(message as IsStarted)) as IsStarted; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static IsStarted create() => IsStarted._();
+  IsStarted createEmptyInstance() => create();
+  static $pb.PbList<IsStarted> createRepeated() => $pb.PbList<IsStarted>();
+  @$core.pragma('dart2js:noInline')
+  static IsStarted getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<IsStarted>(create);
+  static IsStarted? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get isStarted => $_getBF(0);
+  @$pb.TagNumber(1)
+  set isStarted($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasIsStarted() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearIsStarted() => clearField(1);
+
+  @$pb.TagNumber(2)
+  Room get room => $_getN(1);
+  @$pb.TagNumber(2)
+  set room(Room v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasRoom() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearRoom() => clearField(2);
+  @$pb.TagNumber(2)
+  Room ensureRoom() => $_ensure(1);
+}
+
 class Empty extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Empty', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'com.grpc'), createEmptyInstance: create)
     ..hasRequiredFields = false

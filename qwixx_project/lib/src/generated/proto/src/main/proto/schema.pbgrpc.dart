@@ -50,10 +50,10 @@ class QwixxServiceClient extends $grpc.Client {
       '/com.grpc.QwixxService/startTimer',
       ($0.Room value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Time.fromBuffer(value));
-  static final _$startGame = $grpc.ClientMethod<$0.Room, $0.Empty>(
+  static final _$startGame = $grpc.ClientMethod<$0.Room, $0.Room>(
       '/com.grpc.QwixxService/startGame',
       ($0.Room value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
+      ($core.List<$core.int> value) => $0.Room.fromBuffer(value));
   static final _$getStartedGame = $grpc.ClientMethod<$0.Room, $0.Room>(
       '/com.grpc.QwixxService/getStartedGame',
       ($0.Room value) => value.writeToBuffer(),
@@ -117,7 +117,7 @@ class QwixxServiceClient extends $grpc.Client {
         options: options);
   }
 
-  $grpc.ResponseFuture<$0.Empty> startGame($0.Room request,
+  $grpc.ResponseFuture<$0.Room> startGame($0.Room request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$startGame, request, options: options);
   }
@@ -197,13 +197,13 @@ abstract class QwixxServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
         ($0.Time value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Room, $0.Empty>(
+    $addMethod($grpc.ServiceMethod<$0.Room, $0.Room>(
         'startGame',
         startGame_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
-        ($0.Empty value) => value.writeToBuffer()));
+        ($0.Room value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.Room, $0.Room>(
         'getStartedGame',
         getStartedGame_Pre,
@@ -258,7 +258,7 @@ abstract class QwixxServiceBase extends $grpc.Service {
     yield* startTimer(call, await request);
   }
 
-  $async.Future<$0.Empty> startGame_Pre(
+  $async.Future<$0.Room> startGame_Pre(
       $grpc.ServiceCall call, $async.Future<$0.Room> request) async {
     return startGame(call, await request);
   }
@@ -279,7 +279,7 @@ abstract class QwixxServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.Room request);
   $async.Future<$0.Empty> setTime($grpc.ServiceCall call, $0.Time request);
   $async.Stream<$0.Time> startTimer($grpc.ServiceCall call, $0.Room request);
-  $async.Future<$0.Empty> startGame($grpc.ServiceCall call, $0.Room request);
+  $async.Future<$0.Room> startGame($grpc.ServiceCall call, $0.Room request);
   $async.Stream<$0.Room> getStartedGame(
       $grpc.ServiceCall call, $0.Room request);
 }

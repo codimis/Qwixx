@@ -30,6 +30,11 @@ public final class Schema {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_grpc_User_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_grpc_IsStarted_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_grpc_IsStarted_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_grpc_Empty_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -65,25 +70,26 @@ public final class Schema {
       "ellow\020\005\"\'\n\004Room\022\016\n\006roomId\030\001 \001(\t\022\017\n\007sixSi" +
       "de\030\002 \001(\010\"^\n\004User\022\n\n\002id\030\001 \001(\t\022\034\n\004room\030\002 \001" +
       "(\0132\016.com.grpc.Room\022\035\n\005dices\030\003 \003(\0132\016.com." +
-      "grpc.Dice\022\r\n\005queue\030\004 \001(\005\"\007\n\005Empty\")\n\010Use" +
-      "rList\022\035\n\005users\030\001 \003(\0132\016.com.grpc.User\"&\n\010" +
-      "Response\022\r\n\005error\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\"2\n\004",
-      "Time\022\014\n\004Time\030\001 \001(\005\022\034\n\004room\030\002 \001(\0132\016.com.g" +
-      "rpc.Room2\250\004\n\014QwixxService\022(\n\004join\022\016.com." +
-      "grpc.User\032\016.com.grpc.User\"\000\022*\n\006create\022\016." +
-      "com.grpc.User\032\016.com.grpc.User\"\000\0225\n\013getAl" +
-      "lUsers\022\016.com.grpc.Room\032\022.com.grpc.UserLi" +
-      "st\"\0000\001\022,\n\010nextUser\022\016.com.grpc.Room\032\016.com" +
-      ".grpc.User\"\000\0221\n\013currentUser\022\016.com.grpc.R" +
-      "oom\032\016.com.grpc.User\"\0000\001\022-\n\010rollDice\022\016.co" +
-      "m.grpc.User\032\017.com.grpc.Empty\"\000\0225\n\017receiv" +
-      "eRollDice\022\016.com.grpc.Room\032\016.com.grpc.Use",
-      "r\"\0000\001\022,\n\007setTime\022\016.com.grpc.Time\032\017.com.g" +
-      "rpc.Empty\"\000\0220\n\nstartTimer\022\016.com.grpc.Roo" +
-      "m\032\016.com.grpc.Time\"\0000\001\022.\n\tstartGame\022\016.com" +
-      ".grpc.Room\032\017.com.grpc.Empty\"\000\0224\n\016getStar" +
-      "tedGame\022\016.com.grpc.Room\032\016.com.grpc.Room\"" +
-      "\0000\001B\002P\001b\006proto3"
+      "grpc.Dice\022\r\n\005queue\030\004 \001(\005\"<\n\tIsStarted\022\021\n" +
+      "\tisStarted\030\001 \001(\010\022\034\n\004room\030\002 \001(\0132\016.com.grp" +
+      "c.Room\"\007\n\005Empty\")\n\010UserList\022\035\n\005users\030\001 \003",
+      "(\0132\016.com.grpc.User\"&\n\010Response\022\r\n\005error\030" +
+      "\001 \001(\005\022\013\n\003msg\030\002 \001(\t\"2\n\004Time\022\014\n\004Time\030\001 \001(\005" +
+      "\022\034\n\004room\030\002 \001(\0132\016.com.grpc.Room2\250\004\n\014Qwixx" +
+      "Service\022(\n\004join\022\016.com.grpc.User\032\016.com.gr" +
+      "pc.User\"\000\022*\n\006create\022\016.com.grpc.User\032\016.co" +
+      "m.grpc.User\"\000\0225\n\013getAllUsers\022\016.com.grpc." +
+      "Room\032\022.com.grpc.UserList\"\0000\001\022,\n\010nextUser" +
+      "\022\016.com.grpc.Room\032\016.com.grpc.User\"\000\0221\n\013cu" +
+      "rrentUser\022\016.com.grpc.Room\032\016.com.grpc.Use" +
+      "r\"\0000\001\022-\n\010rollDice\022\016.com.grpc.User\032\017.com.",
+      "grpc.Empty\"\000\0225\n\017receiveRollDice\022\016.com.gr" +
+      "pc.Room\032\016.com.grpc.User\"\0000\001\022,\n\007setTime\022\016" +
+      ".com.grpc.Time\032\017.com.grpc.Empty\"\000\0220\n\nsta" +
+      "rtTimer\022\016.com.grpc.Room\032\016.com.grpc.Time\"" +
+      "\0000\001\022.\n\tstartGame\022\016.com.grpc.Room\032\017.com.g" +
+      "rpc.Empty\"\000\0224\n\016getStartedGame\022\016.com.grpc" +
+      ".Room\032\016.com.grpc.Room\"\0000\001B\002P\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -115,26 +121,32 @@ public final class Schema {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_grpc_User_descriptor,
         new java.lang.String[] { "Id", "Room", "Dices", "Queue", });
-    internal_static_com_grpc_Empty_descriptor =
+    internal_static_com_grpc_IsStarted_descriptor =
       getDescriptor().getMessageTypes().get(3);
+    internal_static_com_grpc_IsStarted_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_grpc_IsStarted_descriptor,
+        new java.lang.String[] { "IsStarted", "Room", });
+    internal_static_com_grpc_Empty_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_com_grpc_Empty_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_grpc_Empty_descriptor,
         new java.lang.String[] { });
     internal_static_com_grpc_UserList_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_com_grpc_UserList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_grpc_UserList_descriptor,
         new java.lang.String[] { "Users", });
     internal_static_com_grpc_Response_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_com_grpc_Response_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_grpc_Response_descriptor,
         new java.lang.String[] { "Error", "Msg", });
     internal_static_com_grpc_Time_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_com_grpc_Time_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_grpc_Time_descriptor,

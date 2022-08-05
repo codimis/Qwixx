@@ -1,6 +1,7 @@
 package com.grpc.service;
 
 
+import com.google.protobuf.Descriptors;
 import com.grpc.*;
 import com.grpc.Dice;
 import com.grpc.Empty;
@@ -30,12 +31,12 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     @Override
     public void getStartedGame(Room request, StreamObserver<Room> responseObserver) {
         startGameObserver.add(responseObserver);
-        System.out.println("Hello");
-        if(games.get(request)) {
-            for (StreamObserver<Room> observer : startGameObserver) {
-                observer.onNext(request);
-            }
-        }
+        System.out.println("Here");
+        Room room=games.get(request)?request:Room.newBuilder().setRoomId("1").build();
+        responseObserver.onNext(room);
+
+       // responseObserver.onCompleted();
+      //  observers.remove(responseObserver);
 
     }
 
@@ -48,14 +49,10 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
         for(StreamObserver<UserList> observer:observers){
             observer.onNext(list);
         }
-        try {
-            Thread.sleep(100000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
-        responseObserver.onCompleted();
-        observers.remove(responseObserver);
+
+       // responseObserver.onCompleted();
+       // observers.remove(responseObserver);
     }
 
     @Override

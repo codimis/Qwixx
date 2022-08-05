@@ -31,7 +31,10 @@ message User{
 
 }
 
-
+message IsStarted{
+  bool isStarted=1;
+  Room room=2;
+}
 message Empty{}
 
 message UserList{

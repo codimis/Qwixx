@@ -61,6 +61,6 @@ service QwixxService {
   rpc setTime(Time) returns (Empty){}
   rpc startTimer(Room) returns (stream Time){}
   rpc startGame(Room) returns (Empty){}
-  rpc getStartedGame(Room) returns(stream IsStarted){}
+  rpc getStartedGame(Room) returns(stream Room){}
 
 }

@@ -2,6 +2,7 @@ com\grpc\UserList$Builder.class
 com\grpc\UserListOrBuilder.class
 com\grpc\Time$1.class
 com\grpc\Dice$Type$1.class
+com\grpc\IsStartedOrBuilder.class
 com\grpc\Response.class
 com\grpc\QwixxServiceGrpc$QwixxServiceFutureStub.class
 com\grpc\UserList$1.class
@@ -18,6 +19,7 @@ com\grpc\QwixxServiceGrpc$MethodHandlers.class
 com\grpc\User$1.class
 com\grpc\Empty.class
 com\grpc\QwixxServiceGrpc$QwixxServiceStub.class
+com\grpc\IsStarted$Builder.class
 com\grpc\User.class
 com\grpc\UserOrBuilder.class
 com\grpc\UserList.class
@@ -35,5 +37,7 @@ com\grpc\RoomOrBuilder.class
 com\grpc\Empty$Builder.class
 com\grpc\QwixxServiceGrpc.class
 com\grpc\Dice$1.class
+com\grpc\IsStarted.class
 com\grpc\ResponseOrBuilder.class
 com\grpc\Schema.class
+com\grpc\IsStarted$1.class
