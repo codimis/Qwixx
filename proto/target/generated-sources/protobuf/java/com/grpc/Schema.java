@@ -69,18 +69,18 @@ public final class Schema {
       "rList\022\035\n\005users\030\001 \003(\0132\016.com.grpc.User\"&\n\010" +
       "Response\022\r\n\005error\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\"2\n\004",
       "Time\022\014\n\004Time\030\001 \001(\005\022\034\n\004room\030\002 \001(\0132\016.com.g" +
-      "rpc.Room2\300\003\n\014QwixxService\022(\n\004join\022\016.com." +
+      "rpc.Room2\302\003\n\014QwixxService\022(\n\004join\022\016.com." +
       "grpc.User\032\016.com.grpc.User\"\000\022*\n\006create\022\016." +
       "com.grpc.User\032\016.com.grpc.User\"\000\0225\n\013getAl" +
       "lUsers\022\016.com.grpc.Room\032\022.com.grpc.UserLi" +
-      "st\"\0000\001\022,\n\010nextUser\022\016.com.grpc.User\032\016.com" +
-      ".grpc.User\"\000\022/\n\013currentUser\022\016.com.grpc.R" +
-      "oom\032\016.com.grpc.User\"\000\022-\n\010rollDice\022\016.com." +
-      "grpc.User\032\017.com.grpc.Empty\"\000\0225\n\017receiveR" +
-      "ollDice\022\016.com.grpc.Room\032\016.com.grpc.User\"",
-      "\0000\001\022,\n\007setTime\022\016.com.grpc.Time\032\017.com.grp" +
-      "c.Empty\"\000\0220\n\nstartTimer\022\016.com.grpc.Room\032" +
-      "\016.com.grpc.Time\"\0000\001B\002P\001b\006proto3"
+      "st\"\0000\001\022,\n\010nextUser\022\016.com.grpc.Room\032\016.com" +
+      ".grpc.User\"\000\0221\n\013currentUser\022\016.com.grpc.R" +
+      "oom\032\016.com.grpc.User\"\0000\001\022-\n\010rollDice\022\016.co" +
+      "m.grpc.User\032\017.com.grpc.Empty\"\000\0225\n\017receiv" +
+      "eRollDice\022\016.com.grpc.Room\032\016.com.grpc.Use",
+      "r\"\0000\001\022,\n\007setTime\022\016.com.grpc.Time\032\017.com.g" +
+      "rpc.Empty\"\000\0220\n\nstartTimer\022\016.com.grpc.Roo" +
+      "m\032\016.com.grpc.Time\"\0000\001B\002P\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

@@ -2,7 +2,7 @@ import '../src/generated/proto/src/main/proto/schema.pbgrpc.dart';
 class DefaultUserModel {
   
    User userModel(id,bool? sixSide){
-    return User(id: id ,
+    return User(
             room: Room(roomId:id,sixSide: sixSide),
             dices: 
             [Dice(number: 6,diceColor: Dice_Type.white),

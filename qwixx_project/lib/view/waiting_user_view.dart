@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:qwixx_project/controller/client_server_controller.dart';
+import 'package:qwixx_project/view/online_game_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../src/generated/proto/src/main/proto/schema.pbgrpc.dart';
 
@@ -20,14 +22,18 @@ class _WaitingUserState extends State<WaitingUser> {
   late final ClientController clientController;
   @override
   void initState() {
+    
     super.initState();
-    connectClient();
+        connectClient();
+        storeUserId();
+  }
+  Future<void> storeUserId() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("userId", widget.user.id);
   }
   Future<void> connectClient() async {
     
-        clientController=ClientController();
-
-   
+      clientController=ClientController();
   } 
   void wait(){
     
@@ -80,7 +86,11 @@ class _WaitingUserState extends State<WaitingUser> {
             Padding(
               padding:const EdgeInsets.only(top: 50),
               child: ElevatedButton(onPressed: (){
-            
+                  print(widget.user);
+                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>OnlineGameView(
+                  side: widget.side,user: widget.user
+                  
+                  )));
               }, child: const Text("Start the game")),
             )
               

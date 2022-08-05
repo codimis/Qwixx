@@ -32,13 +32,11 @@ late final QwixxServiceClient stub;
 
  Future<User> join(User user) async {
     User response = await stub.join(user);
-        print(response);
 
     return response;
   }
   Future<User> create(User user)async{
     User response = await stub.create(user);
-      print(response);
     return response;
   }
   Future<void> setTime(Time time)async{
@@ -48,5 +46,18 @@ late final QwixxServiceClient stub;
    Stream<Time> startTimer(Room room) async* {
    Stream<Time> stream=stub.startTimer(room).asBroadcastStream();
    yield* stream;
+  }
+  
+  Stream<User> currenUser(Room room)async*{
+
+    await for (var users in stub.currentUser(room)) {
+      
+      yield users;
+    }
+  
+  }
+  Future<User> nextUser(Room room)async{
+    User stream=await stub.nextUser(room);
+     return stream;
   }
 }

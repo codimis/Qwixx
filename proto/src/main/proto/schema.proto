@@ -51,8 +51,8 @@ service QwixxService {
   rpc join(User) returns (User) {}
   rpc create(User) returns(User){}
   rpc getAllUsers(Room) returns (stream UserList) {}
-  rpc nextUser(User) returns (User){}
-  rpc currentUser(Room) returns (User){}
+  rpc nextUser(Room) returns (User){}
+  rpc currentUser(Room) returns (stream User){}
   rpc rollDice(User) returns (Empty) {}
   rpc receiveRollDice (Room) returns (stream User) {}
   rpc setTime(Time) returns (Empty){}

@@ -64,14 +64,14 @@ public final class QwixxServiceGrpc {
               com.grpc.UserList.getDefaultInstance()))
           .build();
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  public static final io.grpc.MethodDescriptor<com.grpc.User,
+  public static final io.grpc.MethodDescriptor<com.grpc.Room,
       com.grpc.User> METHOD_NEXT_USER =
-      io.grpc.MethodDescriptor.<com.grpc.User, com.grpc.User>newBuilder()
+      io.grpc.MethodDescriptor.<com.grpc.Room, com.grpc.User>newBuilder()
           .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
           .setFullMethodName(generateFullMethodName(
               "com.grpc.QwixxService", "nextUser"))
           .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              com.grpc.User.getDefaultInstance()))
+              com.grpc.Room.getDefaultInstance()))
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
               com.grpc.User.getDefaultInstance()))
           .build();
@@ -79,7 +79,7 @@ public final class QwixxServiceGrpc {
   public static final io.grpc.MethodDescriptor<com.grpc.Room,
       com.grpc.User> METHOD_CURRENT_USER =
       io.grpc.MethodDescriptor.<com.grpc.Room, com.grpc.User>newBuilder()
-          .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+          .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
           .setFullMethodName(generateFullMethodName(
               "com.grpc.QwixxService", "currentUser"))
           .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
@@ -186,7 +186,7 @@ public final class QwixxServiceGrpc {
 
     /**
      */
-    public void nextUser(com.grpc.User request,
+    public void nextUser(com.grpc.Room request,
         io.grpc.stub.StreamObserver<com.grpc.User> responseObserver) {
       asyncUnimplementedUnaryCall(METHOD_NEXT_USER, responseObserver);
     }
@@ -253,12 +253,12 @@ public final class QwixxServiceGrpc {
             METHOD_NEXT_USER,
             asyncUnaryCall(
               new MethodHandlers<
-                com.grpc.User,
+                com.grpc.Room,
                 com.grpc.User>(
                   this, METHODID_NEXT_USER)))
           .addMethod(
             METHOD_CURRENT_USER,
-            asyncUnaryCall(
+            asyncServerStreamingCall(
               new MethodHandlers<
                 com.grpc.Room,
                 com.grpc.User>(
@@ -339,7 +339,7 @@ public final class QwixxServiceGrpc {
 
     /**
      */
-    public void nextUser(com.grpc.User request,
+    public void nextUser(com.grpc.Room request,
         io.grpc.stub.StreamObserver<com.grpc.User> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(METHOD_NEXT_USER, getCallOptions()), request, responseObserver);
@@ -349,7 +349,7 @@ public final class QwixxServiceGrpc {
      */
     public void currentUser(com.grpc.Room request,
         io.grpc.stub.StreamObserver<com.grpc.User> responseObserver) {
-      asyncUnaryCall(
+      asyncServerStreamingCall(
           getChannel().newCall(METHOD_CURRENT_USER, getCallOptions()), request, responseObserver);
     }
 
@@ -428,15 +428,16 @@ public final class QwixxServiceGrpc {
 
     /**
      */
-    public com.grpc.User nextUser(com.grpc.User request) {
+    public com.grpc.User nextUser(com.grpc.Room request) {
       return blockingUnaryCall(
           getChannel(), METHOD_NEXT_USER, getCallOptions(), request);
     }
 
     /**
      */
-    public com.grpc.User currentUser(com.grpc.Room request) {
-      return blockingUnaryCall(
+    public java.util.Iterator<com.grpc.User> currentUser(
+        com.grpc.Room request) {
+      return blockingServerStreamingCall(
           getChannel(), METHOD_CURRENT_USER, getCallOptions(), request);
     }
 
@@ -508,17 +509,9 @@ public final class QwixxServiceGrpc {
     /**
      */
     public com.google.common.util.concurrent.ListenableFuture<com.grpc.User> nextUser(
-        com.grpc.User request) {
-      return futureUnaryCall(
-          getChannel().newCall(METHOD_NEXT_USER, getCallOptions()), request);
-    }
-
-    /**
-     */
-    public com.google.common.util.concurrent.ListenableFuture<com.grpc.User> currentUser(
         com.grpc.Room request) {
       return futureUnaryCall(
-          getChannel().newCall(METHOD_CURRENT_USER, getCallOptions()), request);
+          getChannel().newCall(METHOD_NEXT_USER, getCallOptions()), request);
     }
 
     /**
@@ -578,7 +571,7 @@ public final class QwixxServiceGrpc {
               (io.grpc.stub.StreamObserver<com.grpc.UserList>) responseObserver);
           break;
         case METHODID_NEXT_USER:
-          serviceImpl.nextUser((com.grpc.User) request,
+          serviceImpl.nextUser((com.grpc.Room) request,
               (io.grpc.stub.StreamObserver<com.grpc.User>) responseObserver);
           break;
         case METHODID_CURRENT_USER:

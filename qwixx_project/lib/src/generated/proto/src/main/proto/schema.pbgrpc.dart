@@ -26,9 +26,9 @@ class QwixxServiceClient extends $grpc.Client {
       '/com.grpc.QwixxService/getAllUsers',
       ($0.Room value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.UserList.fromBuffer(value));
-  static final _$nextUser = $grpc.ClientMethod<$0.User, $0.User>(
+  static final _$nextUser = $grpc.ClientMethod<$0.Room, $0.User>(
       '/com.grpc.QwixxService/nextUser',
-      ($0.User value) => value.writeToBuffer(),
+      ($0.Room value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.User.fromBuffer(value));
   static final _$currentUser = $grpc.ClientMethod<$0.Room, $0.User>(
       '/com.grpc.QwixxService/currentUser',
@@ -73,14 +73,16 @@ class QwixxServiceClient extends $grpc.Client {
         options: options);
   }
 
-  $grpc.ResponseFuture<$0.User> nextUser($0.User request,
+  $grpc.ResponseFuture<$0.User> nextUser($0.Room request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$nextUser, request, options: options);
   }
 
-  $grpc.ResponseFuture<$0.User> currentUser($0.Room request,
+  $grpc.ResponseStream<$0.User> currentUser($0.Room request,
       {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$currentUser, request, options: options);
+    return $createStreamingCall(
+        _$currentUser, $async.Stream.fromIterable([request]),
+        options: options);
   }
 
   $grpc.ResponseFuture<$0.Empty> rollDice($0.User request,
@@ -133,18 +135,18 @@ abstract class QwixxServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
         ($0.UserList value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.User, $0.User>(
+    $addMethod($grpc.ServiceMethod<$0.Room, $0.User>(
         'nextUser',
         nextUser_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.User.fromBuffer(value),
+        ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
         ($0.User value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.Room, $0.User>(
         'currentUser',
         currentUser_Pre,
         false,
-        false,
+        true,
         ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
         ($0.User value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.User, $0.Empty>(
@@ -193,13 +195,13 @@ abstract class QwixxServiceBase extends $grpc.Service {
   }
 
   $async.Future<$0.User> nextUser_Pre(
-      $grpc.ServiceCall call, $async.Future<$0.User> request) async {
+      $grpc.ServiceCall call, $async.Future<$0.Room> request) async {
     return nextUser(call, await request);
   }
 
-  $async.Future<$0.User> currentUser_Pre(
-      $grpc.ServiceCall call, $async.Future<$0.Room> request) async {
-    return currentUser(call, await request);
+  $async.Stream<$0.User> currentUser_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Room> request) async* {
+    yield* currentUser(call, await request);
   }
 
   $async.Future<$0.Empty> rollDice_Pre(
@@ -226,8 +228,8 @@ abstract class QwixxServiceBase extends $grpc.Service {
   $async.Future<$0.User> create($grpc.ServiceCall call, $0.User request);
   $async.Stream<$0.UserList> getAllUsers(
       $grpc.ServiceCall call, $0.Room request);
-  $async.Future<$0.User> nextUser($grpc.ServiceCall call, $0.User request);
-  $async.Future<$0.User> currentUser($grpc.ServiceCall call, $0.Room request);
+  $async.Future<$0.User> nextUser($grpc.ServiceCall call, $0.Room request);
+  $async.Stream<$0.User> currentUser($grpc.ServiceCall call, $0.Room request);
   $async.Future<$0.Empty> rollDice($grpc.ServiceCall call, $0.User request);
   $async.Stream<$0.User> receiveRollDice(
       $grpc.ServiceCall call, $0.Room request);
