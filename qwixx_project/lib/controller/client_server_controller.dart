@@ -1,4 +1,4 @@
-import 'package:grpc/grpc.dart' show CallOptions, ChannelCredentials, ChannelOptions, ClientChannel;
+import 'package:grpc/grpc.dart' show CallOptions, ChannelCredentials, ChannelOptions, ClientChannel, ResponseFuture;
 
 import '../src/generated/proto/src/main/proto/schema.pbgrpc.dart';
 
@@ -60,12 +60,23 @@ late final QwixxServiceClient stub;
     User stream=await stub.nextUser(room);
      return stream;
   }
-  void startGame(Room room)async{
-    await stub.startGame(room);
+  Future startGame(Room room)async{
+    Empty response=await stub.startGame(room);
+    return response;
   }
-  Stream<Room> getStartedGame(Room room)async*{
+  Stream<Response> getStartedGame(Room room)async*{
     await for (var room in stub.getStartedGame(room)) {
       yield room;
+    }
+  }
+  void updateDices(User user){
+    stub.updateDice(user);
+  }
+  Stream<User> receiveDice(Room room,User user)async*{
+    await for (var userServer in stub.receiveDice(room)) {
+      if(userServer.id==user.id){
+        yield userServer;
+      }
     }
   }
 }

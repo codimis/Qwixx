@@ -16,6 +16,8 @@ message Dice{
     yellow = 5;
   }
   Type diceColor=2;
+  string path=3;
+  bool enable=4;
 
 }
 message Room{
@@ -56,11 +58,10 @@ service QwixxService {
   rpc getAllUsers(Room) returns (stream UserList) {}
   rpc nextUser(Room) returns (User){}
   rpc currentUser(Room) returns (stream User){}
-  rpc rollDice(User) returns (Empty) {}
-  rpc receiveRollDice (Room) returns (stream User) {}
+  rpc receiveDice (Room) returns (stream User) {}
   rpc setTime(Time) returns (Empty){}
   rpc startTimer(Room) returns (stream Time){}
   rpc startGame(Room) returns (Empty){}
-  rpc getStartedGame(Room) returns(stream Room){}
-
+  rpc getStartedGame(Room) returns(stream Response){}
+  rpc updateDice(User) returns(Empty){}
 }

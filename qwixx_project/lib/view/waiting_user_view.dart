@@ -25,6 +25,7 @@ class _WaitingUserState extends State<WaitingUser> {
     super.initState();
         connectClient();
         storeUserId();
+ 
   }
   
 
@@ -36,6 +37,12 @@ class _WaitingUserState extends State<WaitingUser> {
     
       clientController=ClientController();
   } 
+    Stream<UserList> getAllUsers() async* {
+          var response = clientController.getAllUsers(Room(roomId: widget.user.room.roomId,sixSide: widget.side));
+          await for (var msg in response) {
+          yield msg;
+    }
+  }
 
 
 @override
@@ -58,17 +65,8 @@ class _WaitingUserState extends State<WaitingUser> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            StreamBuilder<Room>(stream: clientController.getStartedGame(widget.user.room),builder: (context, snapshot) { 
-              print("not started");
-              if(snapshot.hasData){
-                print("here");
-                if(snapshot.data!.roomId.contains(widget.user.room.roomId)){
-                  
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>OnlineGameView(side: widget.side,user: widget.user)));
-
-                }
-              }
-              return StreamBuilder<UserList>(stream: clientController.getAllUsers(Room(roomId: widget.user.room.roomId,sixSide: widget.side)),
+            
+               StreamBuilder<UserList>(stream: getAllUsers(),
               builder: (context, snapshot) {
                 if(snapshot.connectionState==ConnectionState.waiting){
                   return const CircularProgressIndicator();
@@ -92,16 +90,19 @@ class _WaitingUserState extends State<WaitingUser> {
                   
                                 }
               },
-              );
-            }
-            ),
+               ),
+            
+            
             Padding(
               padding:const EdgeInsets.only(top: 50),
               child: ElevatedButton(onPressed: () async {
-               clientController.startGame(widget.user.room) ;
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>OnlineGameView(
+              await clientController.startGame(widget.user.room).then((value) => 
+                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>OnlineGameView(
                   side: widget.side,user: widget.user
-                  )));
+                  )))
+              );
+            
+             
               }, child: const Text("Start the game")),
             )
               

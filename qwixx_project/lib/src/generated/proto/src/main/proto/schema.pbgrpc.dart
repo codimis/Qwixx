@@ -34,12 +34,8 @@ class QwixxServiceClient extends $grpc.Client {
       '/com.grpc.QwixxService/currentUser',
       ($0.Room value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.User.fromBuffer(value));
-  static final _$rollDice = $grpc.ClientMethod<$0.User, $0.Empty>(
-      '/com.grpc.QwixxService/rollDice',
-      ($0.User value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
-  static final _$receiveRollDice = $grpc.ClientMethod<$0.Room, $0.User>(
-      '/com.grpc.QwixxService/receiveRollDice',
+  static final _$receiveDice = $grpc.ClientMethod<$0.Room, $0.User>(
+      '/com.grpc.QwixxService/receiveDice',
       ($0.Room value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.User.fromBuffer(value));
   static final _$setTime = $grpc.ClientMethod<$0.Time, $0.Empty>(
@@ -50,14 +46,18 @@ class QwixxServiceClient extends $grpc.Client {
       '/com.grpc.QwixxService/startTimer',
       ($0.Room value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Time.fromBuffer(value));
-  static final _$startGame = $grpc.ClientMethod<$0.Room, $0.Room>(
+  static final _$startGame = $grpc.ClientMethod<$0.Room, $0.Empty>(
       '/com.grpc.QwixxService/startGame',
       ($0.Room value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.Room.fromBuffer(value));
-  static final _$getStartedGame = $grpc.ClientMethod<$0.Room, $0.Room>(
+      ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
+  static final _$getStartedGame = $grpc.ClientMethod<$0.Room, $0.Response>(
       '/com.grpc.QwixxService/getStartedGame',
       ($0.Room value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.Room.fromBuffer(value));
+      ($core.List<$core.int> value) => $0.Response.fromBuffer(value));
+  static final _$updateDice = $grpc.ClientMethod<$0.User, $0.Empty>(
+      '/com.grpc.QwixxService/updateDice',
+      ($0.User value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
 
   QwixxServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -93,15 +93,10 @@ class QwixxServiceClient extends $grpc.Client {
         options: options);
   }
 
-  $grpc.ResponseFuture<$0.Empty> rollDice($0.User request,
-      {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$rollDice, request, options: options);
-  }
-
-  $grpc.ResponseStream<$0.User> receiveRollDice($0.Room request,
+  $grpc.ResponseStream<$0.User> receiveDice($0.Room request,
       {$grpc.CallOptions? options}) {
     return $createStreamingCall(
-        _$receiveRollDice, $async.Stream.fromIterable([request]),
+        _$receiveDice, $async.Stream.fromIterable([request]),
         options: options);
   }
 
@@ -117,16 +112,21 @@ class QwixxServiceClient extends $grpc.Client {
         options: options);
   }
 
-  $grpc.ResponseFuture<$0.Room> startGame($0.Room request,
+  $grpc.ResponseFuture<$0.Empty> startGame($0.Room request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$startGame, request, options: options);
   }
 
-  $grpc.ResponseStream<$0.Room> getStartedGame($0.Room request,
+  $grpc.ResponseStream<$0.Response> getStartedGame($0.Room request,
       {$grpc.CallOptions? options}) {
     return $createStreamingCall(
         _$getStartedGame, $async.Stream.fromIterable([request]),
         options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Empty> updateDice($0.User request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateDice, request, options: options);
   }
 }
 
@@ -169,16 +169,9 @@ abstract class QwixxServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
         ($0.User value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.User, $0.Empty>(
-        'rollDice',
-        rollDice_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.User.fromBuffer(value),
-        ($0.Empty value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.Room, $0.User>(
-        'receiveRollDice',
-        receiveRollDice_Pre,
+        'receiveDice',
+        receiveDice_Pre,
         false,
         true,
         ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
@@ -197,20 +190,27 @@ abstract class QwixxServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
         ($0.Time value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Room, $0.Room>(
+    $addMethod($grpc.ServiceMethod<$0.Room, $0.Empty>(
         'startGame',
         startGame_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
-        ($0.Room value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Room, $0.Room>(
+        ($0.Empty value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Room, $0.Response>(
         'getStartedGame',
         getStartedGame_Pre,
         false,
         true,
         ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
-        ($0.Room value) => value.writeToBuffer()));
+        ($0.Response value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.User, $0.Empty>(
+        'updateDice',
+        updateDice_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.User.fromBuffer(value),
+        ($0.Empty value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.User> join_Pre(
@@ -238,14 +238,9 @@ abstract class QwixxServiceBase extends $grpc.Service {
     yield* currentUser(call, await request);
   }
 
-  $async.Future<$0.Empty> rollDice_Pre(
-      $grpc.ServiceCall call, $async.Future<$0.User> request) async {
-    return rollDice(call, await request);
-  }
-
-  $async.Stream<$0.User> receiveRollDice_Pre(
+  $async.Stream<$0.User> receiveDice_Pre(
       $grpc.ServiceCall call, $async.Future<$0.Room> request) async* {
-    yield* receiveRollDice(call, await request);
+    yield* receiveDice(call, await request);
   }
 
   $async.Future<$0.Empty> setTime_Pre(
@@ -258,14 +253,19 @@ abstract class QwixxServiceBase extends $grpc.Service {
     yield* startTimer(call, await request);
   }
 
-  $async.Future<$0.Room> startGame_Pre(
+  $async.Future<$0.Empty> startGame_Pre(
       $grpc.ServiceCall call, $async.Future<$0.Room> request) async {
     return startGame(call, await request);
   }
 
-  $async.Stream<$0.Room> getStartedGame_Pre(
+  $async.Stream<$0.Response> getStartedGame_Pre(
       $grpc.ServiceCall call, $async.Future<$0.Room> request) async* {
     yield* getStartedGame(call, await request);
+  }
+
+  $async.Future<$0.Empty> updateDice_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.User> request) async {
+    return updateDice(call, await request);
   }
 
   $async.Future<$0.User> join($grpc.ServiceCall call, $0.User request);
@@ -274,12 +274,11 @@ abstract class QwixxServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.Room request);
   $async.Future<$0.User> nextUser($grpc.ServiceCall call, $0.Room request);
   $async.Stream<$0.User> currentUser($grpc.ServiceCall call, $0.Room request);
-  $async.Future<$0.Empty> rollDice($grpc.ServiceCall call, $0.User request);
-  $async.Stream<$0.User> receiveRollDice(
-      $grpc.ServiceCall call, $0.Room request);
+  $async.Stream<$0.User> receiveDice($grpc.ServiceCall call, $0.Room request);
   $async.Future<$0.Empty> setTime($grpc.ServiceCall call, $0.Time request);
   $async.Stream<$0.Time> startTimer($grpc.ServiceCall call, $0.Room request);
-  $async.Future<$0.Room> startGame($grpc.ServiceCall call, $0.Room request);
-  $async.Stream<$0.Room> getStartedGame(
+  $async.Future<$0.Empty> startGame($grpc.ServiceCall call, $0.Room request);
+  $async.Stream<$0.Response> getStartedGame(
       $grpc.ServiceCall call, $0.Room request);
+  $async.Future<$0.Empty> updateDice($grpc.ServiceCall call, $0.User request);
 }

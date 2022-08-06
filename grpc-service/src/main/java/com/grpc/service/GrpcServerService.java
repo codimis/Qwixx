@@ -11,9 +11,11 @@ import com.grpc.Room;
 import com.grpc.Time;
 import com.grpc.User;
 import com.grpc.UserList;
+import io.grpc.Context;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
+import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Stream;
@@ -26,14 +28,39 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     static Map<Room,Boolean> games=new HashMap<>();
      static List<StreamObserver<UserList>> observers=new ArrayList<>();
     static List<StreamObserver<User>> currentUserObserver=new ArrayList<>();
-    static List<StreamObserver<Room>> startGameObserver=new ArrayList<>();
+    static List<StreamObserver<Response>> startGameObserver=new ArrayList<>();
+
 
     @Override
-    public void getStartedGame(Room request, StreamObserver<Room> responseObserver) {
+    public void updateDice(User request, StreamObserver<Empty> responseObserver) {
+        user.get(request.getRoom())
+        .stream()
+                .filter((user1)->user1.getId().equals(request.getId()))
+                .forEach(user1 -> user1=request);
+        responseObserver.onNext(Empty.newBuilder().build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getStartedGame(Room request, StreamObserver<Response> responseObserver) {
         startGameObserver.add(responseObserver);
         System.out.println("Here");
-        Room room=games.get(request)?request:Room.newBuilder().setRoomId("1").build();
-        responseObserver.onNext(room);
+        for(StreamObserver<Response> observer:startGameObserver){
+            if(games.get(request)){
+                observer.onNext(Response.newBuilder().setMsg("started").setError(0).build());
+            }else{
+                observer.onNext(Response.newBuilder().setMsg("not Started").setError(1).build());
+
+            }
+
+        }
+        try {
+            Thread.sleep(100000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        responseObserver.onCompleted();
+        startGameObserver.remove(responseObserver);
 
        // responseObserver.onCompleted();
       //  observers.remove(responseObserver);
@@ -50,9 +77,8 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
             observer.onNext(list);
         }
 
-
-       // responseObserver.onCompleted();
-       // observers.remove(responseObserver);
+     //   responseObserver.onCompleted();
+   //   observers.remove(responseObserver);
     }
 
     @Override
@@ -67,17 +93,20 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     public void currentUser(Room request, StreamObserver<User> responseObserver) {
 
         currentUserObserver.add(responseObserver);
-        for(StreamObserver<User> observer:currentUserObserver){
-            int userQueue=queue.get(request);
-            observer.onNext(user.get(request).get(userQueue));
-        }
-        try {
-            Thread.sleep(100000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        responseObserver.onCompleted();
-        currentUserObserver.remove(responseObserver);
+
+            for(StreamObserver<User> observer:currentUserObserver){
+                int userQueue=queue.get(request);
+                observer.onNext(user.get(request).get(userQueue));
+            }
+            try {
+                Thread.sleep(100000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            responseObserver.onCompleted();
+            currentUserObserver.remove(responseObserver);
+
+
 
 
     }
@@ -148,16 +177,9 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
 
 
     @Override
-    public void rollDice(User request, StreamObserver<Empty> responseObserver) {
-        user.get(request.getRoom()).remove(request.getQueue());
-        user.get(request.getRoom()).add(request);
-        responseObserver.onCompleted();
-
-    }
-
-    @Override
-    public void receiveRollDice(Room request, StreamObserver<User> responseObserver) {
+    public void receiveDice(Room request, StreamObserver<User> responseObserver) {
         user.get(request).forEach(responseObserver::onNext);
         responseObserver.onCompleted();
     }
+
 }

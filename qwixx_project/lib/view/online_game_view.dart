@@ -15,12 +15,26 @@ class OnlineGameView extends StatefulWidget {
 class _OnlineGameViewState extends State<OnlineGameView> {
   late final ClientController controller;
   bool isThisCurrentUser=false;
+  late User currentUser=widget.user;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
    controller=ClientController();
-    
+
+
+  }
+  Stream<User> listenCurrentUser() async*{
+    var response =controller.currenUser(widget.user.room);
+    await for(User v in response) {
+      if(v.id!=currentUser.id){
+        setState(() {
+          currentUser=v;
+        });
+        
+      }
+      yield v;
+    }
   }
 
     
@@ -36,14 +50,21 @@ class _OnlineGameViewState extends State<OnlineGameView> {
       body:  Center(
         child: Column(
           children: [
+            StreamBuilder<User>(builder: (context,snapshot){
+              if(snapshot.hasData){
+                return Text(snapshot.data!.id);
+              }
+              return const Text("");
+            },stream: controller.receiveDice(widget.user.room,currentUser)),
+
             StreamBuilder<User>(builder: (context, snapshot) {
               if (snapshot.hasData) {
-   
                 if ((snapshot.data!.id).contains( widget.user.id)) {
+                     
 
                   return ElevatedButton(onPressed: (){
                     setState(() {
-                      
+                       currentUser=snapshot.data!;
                     });
                     nextUser();
                   },child: const Text("Next User"),);
@@ -51,7 +72,7 @@ class _OnlineGameViewState extends State<OnlineGameView> {
                 
               }
               return const Text("");
-            }, stream: controller.currenUser(widget.user.room),
+            }, stream: listenCurrentUser(),
             
             ),
         

@@ -14,6 +14,8 @@ const Dice$json = const {
   '2': const [
     const {'1': 'number', '3': 1, '4': 1, '5': 5, '10': 'number'},
     const {'1': 'diceColor', '3': 2, '4': 1, '5': 14, '6': '.com.grpc.Dice.Type', '10': 'diceColor'},
+    const {'1': 'path', '3': 3, '4': 1, '5': 9, '10': 'path'},
+    const {'1': 'enable', '3': 4, '4': 1, '5': 8, '10': 'enable'},
   ],
   '4': const [Dice_Type$json],
 };
@@ -32,7 +34,7 @@ const Dice_Type$json = const {
 };
 
 /// Descriptor for `Dice`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List diceDescriptor = $convert.base64Decode('CgREaWNlEhYKBm51bWJlchgBIAEoBVIGbnVtYmVyEjEKCWRpY2VDb2xvchgCIAEoDjITLmNvbS5ncnBjLkRpY2UuVHlwZVIJZGljZUNvbG9yIkwKBFR5cGUSCQoFd2hpdGUQABIPCgtzZWNvbmRXaGl0ZRABEggKBGJsdWUQAhIJCgVncmVlbhADEgcKA3JlZBAEEgoKBnllbGxvdxAF');
+final $typed_data.Uint8List diceDescriptor = $convert.base64Decode('CgREaWNlEhYKBm51bWJlchgBIAEoBVIGbnVtYmVyEjEKCWRpY2VDb2xvchgCIAEoDjITLmNvbS5ncnBjLkRpY2UuVHlwZVIJZGljZUNvbG9yEhIKBHBhdGgYAyABKAlSBHBhdGgSFgoGZW5hYmxlGAQgASgIUgZlbmFibGUiTAoEVHlwZRIJCgV3aGl0ZRAAEg8KC3NlY29uZFdoaXRlEAESCAoEYmx1ZRACEgkKBWdyZWVuEAMSBwoDcmVkEAQSCgoGeWVsbG93EAU=');
 @$core.Deprecated('Use roomDescriptor instead')
 const Room$json = const {
   '1': 'Room',

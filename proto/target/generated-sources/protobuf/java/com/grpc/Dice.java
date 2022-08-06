@@ -17,6 +17,8 @@ public  final class Dice extends
   private Dice() {
     number_ = 0;
     diceColor_ = 0;
+    path_ = "";
+    enable_ = false;
   }
 
   @java.lang.Override
@@ -53,6 +55,17 @@ public  final class Dice extends
             int rawValue = input.readEnum();
 
             diceColor_ = rawValue;
+            break;
+          }
+          case 26: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            path_ = s;
+            break;
+          }
+          case 32: {
+
+            enable_ = input.readBool();
             break;
           }
         }
@@ -237,6 +250,49 @@ public  final class Dice extends
     return result == null ? com.grpc.Dice.Type.UNRECOGNIZED : result;
   }
 
+  public static final int PATH_FIELD_NUMBER = 3;
+  private volatile java.lang.Object path_;
+  /**
+   * <code>string path = 3;</code>
+   */
+  public java.lang.String getPath() {
+    java.lang.Object ref = path_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      path_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string path = 3;</code>
+   */
+  public com.google.protobuf.ByteString
+      getPathBytes() {
+    java.lang.Object ref = path_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      path_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int ENABLE_FIELD_NUMBER = 4;
+  private boolean enable_;
+  /**
+   * <code>bool enable = 4;</code>
+   */
+  public boolean getEnable() {
+    return enable_;
+  }
+
   private byte memoizedIsInitialized = -1;
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
@@ -255,6 +311,12 @@ public  final class Dice extends
     if (diceColor_ != com.grpc.Dice.Type.white.getNumber()) {
       output.writeEnum(2, diceColor_);
     }
+    if (!getPathBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, path_);
+    }
+    if (enable_ != false) {
+      output.writeBool(4, enable_);
+    }
   }
 
   public int getSerializedSize() {
@@ -269,6 +331,13 @@ public  final class Dice extends
     if (diceColor_ != com.grpc.Dice.Type.white.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(2, diceColor_);
+    }
+    if (!getPathBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, path_);
+    }
+    if (enable_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(4, enable_);
     }
     memoizedSize = size;
     return size;
@@ -289,6 +358,10 @@ public  final class Dice extends
     result = result && (getNumber()
         == other.getNumber());
     result = result && diceColor_ == other.diceColor_;
+    result = result && getPath()
+        .equals(other.getPath());
+    result = result && (getEnable()
+        == other.getEnable());
     return result;
   }
 
@@ -303,6 +376,11 @@ public  final class Dice extends
     hash = (53 * hash) + getNumber();
     hash = (37 * hash) + DICECOLOR_FIELD_NUMBER;
     hash = (53 * hash) + diceColor_;
+    hash = (37 * hash) + PATH_FIELD_NUMBER;
+    hash = (53 * hash) + getPath().hashCode();
+    hash = (37 * hash) + ENABLE_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getEnable());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -436,6 +514,10 @@ public  final class Dice extends
 
       diceColor_ = 0;
 
+      path_ = "";
+
+      enable_ = false;
+
       return this;
     }
 
@@ -460,6 +542,8 @@ public  final class Dice extends
       com.grpc.Dice result = new com.grpc.Dice(this);
       result.number_ = number_;
       result.diceColor_ = diceColor_;
+      result.path_ = path_;
+      result.enable_ = enable_;
       onBuilt();
       return result;
     }
@@ -506,6 +590,13 @@ public  final class Dice extends
       }
       if (other.diceColor_ != 0) {
         setDiceColorValue(other.getDiceColorValue());
+      }
+      if (!other.getPath().isEmpty()) {
+        path_ = other.path_;
+        onChanged();
+      }
+      if (other.getEnable() != false) {
+        setEnable(other.getEnable());
       }
       onChanged();
       return this;
@@ -599,6 +690,101 @@ public  final class Dice extends
     public Builder clearDiceColor() {
       
       diceColor_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object path_ = "";
+    /**
+     * <code>string path = 3;</code>
+     */
+    public java.lang.String getPath() {
+      java.lang.Object ref = path_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        path_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string path = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPathBytes() {
+      java.lang.Object ref = path_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        path_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string path = 3;</code>
+     */
+    public Builder setPath(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      path_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string path = 3;</code>
+     */
+    public Builder clearPath() {
+      
+      path_ = getDefaultInstance().getPath();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string path = 3;</code>
+     */
+    public Builder setPathBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      path_ = value;
+      onChanged();
+      return this;
+    }
+
+    private boolean enable_ ;
+    /**
+     * <code>bool enable = 4;</code>
+     */
+    public boolean getEnable() {
+      return enable_;
+    }
+    /**
+     * <code>bool enable = 4;</code>
+     */
+    public Builder setEnable(boolean value) {
+      
+      enable_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>bool enable = 4;</code>
+     */
+    public Builder clearEnable() {
+      
+      enable_ = false;
       onChanged();
       return this;
     }

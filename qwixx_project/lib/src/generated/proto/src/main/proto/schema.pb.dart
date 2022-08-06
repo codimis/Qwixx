@@ -17,6 +17,8 @@ class Dice extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Dice', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'com.grpc'), createEmptyInstance: create)
     ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'number', $pb.PbFieldType.O3)
     ..e<Dice_Type>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'diceColor', $pb.PbFieldType.OE, protoName: 'diceColor', defaultOrMaker: Dice_Type.white, valueOf: Dice_Type.valueOf, enumValues: Dice_Type.values)
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'path')
+    ..aOB(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'enable')
     ..hasRequiredFields = false
   ;
 
@@ -24,6 +26,8 @@ class Dice extends $pb.GeneratedMessage {
   factory Dice({
     $core.int? number,
     Dice_Type? diceColor,
+    $core.String? path,
+    $core.bool? enable,
   }) {
     final _result = create();
     if (number != null) {
@@ -31,6 +35,12 @@ class Dice extends $pb.GeneratedMessage {
     }
     if (diceColor != null) {
       _result.diceColor = diceColor;
+    }
+    if (path != null) {
+      _result.path = path;
+    }
+    if (enable != null) {
+      _result.enable = enable;
     }
     return _result;
   }
@@ -72,6 +82,24 @@ class Dice extends $pb.GeneratedMessage {
   $core.bool hasDiceColor() => $_has(1);
   @$pb.TagNumber(2)
   void clearDiceColor() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get path => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set path($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasPath() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPath() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.bool get enable => $_getBF(3);
+  @$pb.TagNumber(4)
+  set enable($core.bool v) { $_setBool(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasEnable() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearEnable() => clearField(4);
 }
 
 class Room extends $pb.GeneratedMessage {

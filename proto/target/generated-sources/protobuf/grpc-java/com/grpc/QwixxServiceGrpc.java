@@ -88,24 +88,12 @@ public final class QwixxServiceGrpc {
               com.grpc.User.getDefaultInstance()))
           .build();
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  public static final io.grpc.MethodDescriptor<com.grpc.User,
-      com.grpc.Empty> METHOD_ROLL_DICE =
-      io.grpc.MethodDescriptor.<com.grpc.User, com.grpc.Empty>newBuilder()
-          .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-          .setFullMethodName(generateFullMethodName(
-              "com.grpc.QwixxService", "rollDice"))
-          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              com.grpc.User.getDefaultInstance()))
-          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              com.grpc.Empty.getDefaultInstance()))
-          .build();
-  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static final io.grpc.MethodDescriptor<com.grpc.Room,
-      com.grpc.User> METHOD_RECEIVE_ROLL_DICE =
+      com.grpc.User> METHOD_RECEIVE_DICE =
       io.grpc.MethodDescriptor.<com.grpc.Room, com.grpc.User>newBuilder()
           .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
           .setFullMethodName(generateFullMethodName(
-              "com.grpc.QwixxService", "receiveRollDice"))
+              "com.grpc.QwixxService", "receiveDice"))
           .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
               com.grpc.Room.getDefaultInstance()))
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
@@ -149,15 +137,27 @@ public final class QwixxServiceGrpc {
           .build();
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static final io.grpc.MethodDescriptor<com.grpc.Room,
-      com.grpc.Room> METHOD_GET_STARTED_GAME =
-      io.grpc.MethodDescriptor.<com.grpc.Room, com.grpc.Room>newBuilder()
+      com.grpc.Response> METHOD_GET_STARTED_GAME =
+      io.grpc.MethodDescriptor.<com.grpc.Room, com.grpc.Response>newBuilder()
           .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
           .setFullMethodName(generateFullMethodName(
               "com.grpc.QwixxService", "getStartedGame"))
           .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
               com.grpc.Room.getDefaultInstance()))
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              com.grpc.Room.getDefaultInstance()))
+              com.grpc.Response.getDefaultInstance()))
+          .build();
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static final io.grpc.MethodDescriptor<com.grpc.User,
+      com.grpc.Empty> METHOD_UPDATE_DICE =
+      io.grpc.MethodDescriptor.<com.grpc.User, com.grpc.Empty>newBuilder()
+          .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+          .setFullMethodName(generateFullMethodName(
+              "com.grpc.QwixxService", "updateDice"))
+          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              com.grpc.User.getDefaultInstance()))
+          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              com.grpc.Empty.getDefaultInstance()))
           .build();
 
   /**
@@ -224,16 +224,9 @@ public final class QwixxServiceGrpc {
 
     /**
      */
-    public void rollDice(com.grpc.User request,
-        io.grpc.stub.StreamObserver<com.grpc.Empty> responseObserver) {
-      asyncUnimplementedUnaryCall(METHOD_ROLL_DICE, responseObserver);
-    }
-
-    /**
-     */
-    public void receiveRollDice(com.grpc.Room request,
+    public void receiveDice(com.grpc.Room request,
         io.grpc.stub.StreamObserver<com.grpc.User> responseObserver) {
-      asyncUnimplementedUnaryCall(METHOD_RECEIVE_ROLL_DICE, responseObserver);
+      asyncUnimplementedUnaryCall(METHOD_RECEIVE_DICE, responseObserver);
     }
 
     /**
@@ -260,8 +253,15 @@ public final class QwixxServiceGrpc {
     /**
      */
     public void getStartedGame(com.grpc.Room request,
-        io.grpc.stub.StreamObserver<com.grpc.Room> responseObserver) {
+        io.grpc.stub.StreamObserver<com.grpc.Response> responseObserver) {
       asyncUnimplementedUnaryCall(METHOD_GET_STARTED_GAME, responseObserver);
+    }
+
+    /**
+     */
+    public void updateDice(com.grpc.User request,
+        io.grpc.stub.StreamObserver<com.grpc.Empty> responseObserver) {
+      asyncUnimplementedUnaryCall(METHOD_UPDATE_DICE, responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -302,19 +302,12 @@ public final class QwixxServiceGrpc {
                 com.grpc.User>(
                   this, METHODID_CURRENT_USER)))
           .addMethod(
-            METHOD_ROLL_DICE,
-            asyncUnaryCall(
-              new MethodHandlers<
-                com.grpc.User,
-                com.grpc.Empty>(
-                  this, METHODID_ROLL_DICE)))
-          .addMethod(
-            METHOD_RECEIVE_ROLL_DICE,
+            METHOD_RECEIVE_DICE,
             asyncServerStreamingCall(
               new MethodHandlers<
                 com.grpc.Room,
                 com.grpc.User>(
-                  this, METHODID_RECEIVE_ROLL_DICE)))
+                  this, METHODID_RECEIVE_DICE)))
           .addMethod(
             METHOD_SET_TIME,
             asyncUnaryCall(
@@ -341,8 +334,15 @@ public final class QwixxServiceGrpc {
             asyncServerStreamingCall(
               new MethodHandlers<
                 com.grpc.Room,
-                com.grpc.Room>(
+                com.grpc.Response>(
                   this, METHODID_GET_STARTED_GAME)))
+          .addMethod(
+            METHOD_UPDATE_DICE,
+            asyncUnaryCall(
+              new MethodHandlers<
+                com.grpc.User,
+                com.grpc.Empty>(
+                  this, METHODID_UPDATE_DICE)))
           .build();
     }
   }
@@ -407,18 +407,10 @@ public final class QwixxServiceGrpc {
 
     /**
      */
-    public void rollDice(com.grpc.User request,
-        io.grpc.stub.StreamObserver<com.grpc.Empty> responseObserver) {
-      asyncUnaryCall(
-          getChannel().newCall(METHOD_ROLL_DICE, getCallOptions()), request, responseObserver);
-    }
-
-    /**
-     */
-    public void receiveRollDice(com.grpc.Room request,
+    public void receiveDice(com.grpc.Room request,
         io.grpc.stub.StreamObserver<com.grpc.User> responseObserver) {
       asyncServerStreamingCall(
-          getChannel().newCall(METHOD_RECEIVE_ROLL_DICE, getCallOptions()), request, responseObserver);
+          getChannel().newCall(METHOD_RECEIVE_DICE, getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -448,9 +440,17 @@ public final class QwixxServiceGrpc {
     /**
      */
     public void getStartedGame(com.grpc.Room request,
-        io.grpc.stub.StreamObserver<com.grpc.Room> responseObserver) {
+        io.grpc.stub.StreamObserver<com.grpc.Response> responseObserver) {
       asyncServerStreamingCall(
           getChannel().newCall(METHOD_GET_STARTED_GAME, getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void updateDice(com.grpc.User request,
+        io.grpc.stub.StreamObserver<com.grpc.Empty> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_UPDATE_DICE, getCallOptions()), request, responseObserver);
     }
   }
 
@@ -511,17 +511,10 @@ public final class QwixxServiceGrpc {
 
     /**
      */
-    public com.grpc.Empty rollDice(com.grpc.User request) {
-      return blockingUnaryCall(
-          getChannel(), METHOD_ROLL_DICE, getCallOptions(), request);
-    }
-
-    /**
-     */
-    public java.util.Iterator<com.grpc.User> receiveRollDice(
+    public java.util.Iterator<com.grpc.User> receiveDice(
         com.grpc.Room request) {
       return blockingServerStreamingCall(
-          getChannel(), METHOD_RECEIVE_ROLL_DICE, getCallOptions(), request);
+          getChannel(), METHOD_RECEIVE_DICE, getCallOptions(), request);
     }
 
     /**
@@ -548,10 +541,17 @@ public final class QwixxServiceGrpc {
 
     /**
      */
-    public java.util.Iterator<com.grpc.Room> getStartedGame(
+    public java.util.Iterator<com.grpc.Response> getStartedGame(
         com.grpc.Room request) {
       return blockingServerStreamingCall(
           getChannel(), METHOD_GET_STARTED_GAME, getCallOptions(), request);
+    }
+
+    /**
+     */
+    public com.grpc.Empty updateDice(com.grpc.User request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_UPDATE_DICE, getCallOptions(), request);
     }
   }
 
@@ -599,14 +599,6 @@ public final class QwixxServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.grpc.Empty> rollDice(
-        com.grpc.User request) {
-      return futureUnaryCall(
-          getChannel().newCall(METHOD_ROLL_DICE, getCallOptions()), request);
-    }
-
-    /**
-     */
     public com.google.common.util.concurrent.ListenableFuture<com.grpc.Empty> setTime(
         com.grpc.Time request) {
       return futureUnaryCall(
@@ -620,6 +612,14 @@ public final class QwixxServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_START_GAME, getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.grpc.Empty> updateDice(
+        com.grpc.User request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_UPDATE_DICE, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_JOIN = 0;
@@ -627,12 +627,12 @@ public final class QwixxServiceGrpc {
   private static final int METHODID_GET_ALL_USERS = 2;
   private static final int METHODID_NEXT_USER = 3;
   private static final int METHODID_CURRENT_USER = 4;
-  private static final int METHODID_ROLL_DICE = 5;
-  private static final int METHODID_RECEIVE_ROLL_DICE = 6;
-  private static final int METHODID_SET_TIME = 7;
-  private static final int METHODID_START_TIMER = 8;
-  private static final int METHODID_START_GAME = 9;
-  private static final int METHODID_GET_STARTED_GAME = 10;
+  private static final int METHODID_RECEIVE_DICE = 5;
+  private static final int METHODID_SET_TIME = 6;
+  private static final int METHODID_START_TIMER = 7;
+  private static final int METHODID_START_GAME = 8;
+  private static final int METHODID_GET_STARTED_GAME = 9;
+  private static final int METHODID_UPDATE_DICE = 10;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -671,12 +671,8 @@ public final class QwixxServiceGrpc {
           serviceImpl.currentUser((com.grpc.Room) request,
               (io.grpc.stub.StreamObserver<com.grpc.User>) responseObserver);
           break;
-        case METHODID_ROLL_DICE:
-          serviceImpl.rollDice((com.grpc.User) request,
-              (io.grpc.stub.StreamObserver<com.grpc.Empty>) responseObserver);
-          break;
-        case METHODID_RECEIVE_ROLL_DICE:
-          serviceImpl.receiveRollDice((com.grpc.Room) request,
+        case METHODID_RECEIVE_DICE:
+          serviceImpl.receiveDice((com.grpc.Room) request,
               (io.grpc.stub.StreamObserver<com.grpc.User>) responseObserver);
           break;
         case METHODID_SET_TIME:
@@ -693,7 +689,11 @@ public final class QwixxServiceGrpc {
           break;
         case METHODID_GET_STARTED_GAME:
           serviceImpl.getStartedGame((com.grpc.Room) request,
-              (io.grpc.stub.StreamObserver<com.grpc.Room>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.grpc.Response>) responseObserver);
+          break;
+        case METHODID_UPDATE_DICE:
+          serviceImpl.updateDice((com.grpc.User) request,
+              (io.grpc.stub.StreamObserver<com.grpc.Empty>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -733,12 +733,12 @@ public final class QwixxServiceGrpc {
               .addMethod(METHOD_GET_ALL_USERS)
               .addMethod(METHOD_NEXT_USER)
               .addMethod(METHOD_CURRENT_USER)
-              .addMethod(METHOD_ROLL_DICE)
-              .addMethod(METHOD_RECEIVE_ROLL_DICE)
+              .addMethod(METHOD_RECEIVE_DICE)
               .addMethod(METHOD_SET_TIME)
               .addMethod(METHOD_START_TIMER)
               .addMethod(METHOD_START_GAME)
               .addMethod(METHOD_GET_STARTED_GAME)
+              .addMethod(METHOD_UPDATE_DICE)
               .build();
         }
       }

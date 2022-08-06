@@ -20,4 +20,19 @@ public interface DiceOrBuilder extends
    * <code>.com.grpc.Dice.Type diceColor = 2;</code>
    */
   com.grpc.Dice.Type getDiceColor();
+
+  /**
+   * <code>string path = 3;</code>
+   */
+  java.lang.String getPath();
+  /**
+   * <code>string path = 3;</code>
+   */
+  com.google.protobuf.ByteString
+      getPathBytes();
+
+  /**
+   * <code>bool enable = 4;</code>
+   */
+  boolean getEnable();
 }
